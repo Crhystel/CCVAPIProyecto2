@@ -16,15 +16,15 @@ namespace CCVAPIProyecto2.Repositories
             return _context.Actividades.Any(c => c.Id == actividadId);
         }
 
-        public bool CreateActividad(int actividadId, int claseId, Actividad actividad)
+        public bool CreateActividad(int actividadId, /*int claseId,*/ Actividad actividad)
         {
-            var claseActividad = _context.Clases.Where(c => c.Id == claseId).FirstOrDefault();
-            var claseActividadNuevo = new ClaseActividad()
-            {
-                ClaseId = claseId,
-                Actividad = actividad,
-            };
-            _context.Add(claseActividadNuevo);
+            //var claseActividad = _context.Clases.Where(c => c.Id == claseId).FirstOrDefault();
+            //var claseActividadNuevo = new ClaseActividad()
+            //{
+            //    ClaseId = claseId,
+            //    Actividad = actividad,
+            //};
+            //_context.Add(claseActividadNuevo);
             _context.Add(actividad);
             return Save();
         }
@@ -51,7 +51,7 @@ namespace CCVAPIProyecto2.Repositories
             return saved > 0 ? true : false;
         }
 
-        public bool UpdateActividad(int actividadId, int claseId, Actividad actividad)
+        public bool UpdateActividad(int actividadId,  Actividad actividad)
         {
             _context.Update(actividad);
             return Save();
