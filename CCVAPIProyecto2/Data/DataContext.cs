@@ -31,7 +31,6 @@ namespace CCVAPIProyecto2.Data
             base.OnModelCreating(modelBuilder);
 
 
-
             modelBuilder.Entity<ClaseProfesor>()
                 .HasKey(c => new { c.ProfesorId, c.ClasePId });
             modelBuilder.Entity<ClaseProfesor>()

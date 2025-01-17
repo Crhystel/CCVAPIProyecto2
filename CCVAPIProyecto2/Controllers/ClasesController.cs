@@ -41,7 +41,7 @@ namespace CCVAPIProyecto2.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearClase([FromQuery] string nombre, [FromQuery] int estudiantesId, [FromQuery] int profesoresId, [FromBody] ClaseDto claseCreate)
+        public IActionResult CrearClase([FromQuery] string nombre, /*[FromQuery] int estudiantesId, [FromQuery] int profesoresId,*/ [FromBody] ClaseDto claseCreate)
         {
             if (claseCreate == null)
                 return BadRequest(ModelState);
@@ -55,7 +55,7 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var claseMap = _mapper.Map<Clase>(claseCreate);
-            if (!_clase.CreateClase(nombre, estudiantesId, profesoresId, claseMap))
+            if (!_clase.CreateClase(nombre, /*estudiantesId, profesoresId,*/ claseMap))
             {
                 ModelState.AddModelError("", "Algo salio mal");
                 return StatusCode(500, ModelState);
@@ -66,7 +66,7 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateClase(string nombre, [FromQuery] int estudianteId, [FromQuery] int profesorId, [FromBody] ClaseDto claseUpdate)
+        public IActionResult UpdateClase(string nombre, /*[FromQuery] int estudianteId, [FromQuery] int profesorId,*/ [FromBody] ClaseDto claseUpdate)
         {
             if (claseUpdate == null)
                 return BadRequest(ModelState);
@@ -77,7 +77,7 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
             var claseMap = _mapper.Map<Clase>(claseUpdate);
-            if (!_clase.UpdateClase(claseUpdate.Nombre, estudianteId, profesorId, claseMap)) // Cambiado de nombre a claseUpdate.Id
+            if (!_clase.UpdateClase(claseUpdate.Nombre, /*estudianteId, profesorId,*/ claseMap)) // Cambiado de nombre a claseUpdate.Id
             {
                 ModelState.AddModelError("", "Algo salio mal");
                 return StatusCode(500, ModelState);
@@ -88,7 +88,7 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteProfesor(int claseId, [FromBody] ClaseDto claseUpdate)
+        public IActionResult DeleteClase(int claseId, [FromBody] ClaseDto claseUpdate)
         {
             if (!_clase.ClaseExiste(claseId))
             {

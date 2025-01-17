@@ -16,24 +16,29 @@ namespace CCVAPIProyecto2.Repositories
             return _context.Clases.Any(c => c.Id == id);
         }
 
-        public bool CreateClase(string nombre, int estudiantesId, int profesoresId, Clase clase)
+        public bool CreateClase(string nombre, /*int estudiantesId, int profesoresId, */Clase clase)
         {
             var nombreClase = _context.Clases.SingleOrDefault(c => c.Nombre==nombre);
-            var estudianteClase = _context.Estudiantes.SingleOrDefault(e => e.Id == estudiantesId);
-            var profesorClase = _context.Profesores.SingleOrDefault(p => p.Id == profesoresId);
+            //var estudianteClase = _context.Estudiantes.SingleOrDefault(e => e.Id == estudiantesId);
+            //var profesorClase = _context.Profesores.SingleOrDefault(p => p.Id == profesoresId);
 
-            var nuevoProfesorClase = new ClaseProfesor()
-            {
-                ClaseP = nombreClase,
-                Profesor = profesorClase,
-            };
-            _context.Add(nuevoProfesorClase);
-            var nuevoEstudianteClase = new ClaseEstudiante()
-            {
-                Clase = nombreClase,
-                Estudiante = estudianteClase
-            };
-            _context.Add(nuevoEstudianteClase);
+            _context.Add(clase);
+            clase.Nombre = nombre;
+           
+
+            //var nuevoProfesorClase = new ClaseProfesor()
+            //{
+            //    ClaseP = nombreClase,
+            //    Profesor = profesorClase,
+            //};
+            //_context.Add(nuevoProfesorClase);
+            //var nuevoEstudianteClase = new ClaseEstudiante()
+            //{
+            //    Clase = nombreClase,
+            //    Estudiante = estudianteClase
+            //};
+            //_context.Add(nuevoEstudianteClase);
+            
 
             return Save();
         }
@@ -62,7 +67,7 @@ namespace CCVAPIProyecto2.Repositories
             return saved > 0 ? true : false;
         }
 
-        public bool UpdateClase(string nombre, int estudiantesId, int profesoresId, Clase clase)
+        public bool UpdateClase(string nombre, /*int estudiantesId, int profesoresId, */Clase clase)
         {
             _context.Update(clase);
             return Save();
