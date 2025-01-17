@@ -44,9 +44,6 @@ namespace CCVAPIProyecto2.Data
                 .WithMany(c => c.ClaseProfesores)
                 .HasForeignKey(c => c.ClasePId)
                 .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<ClaseProfesor>()
-                .Property(c => c.Materia)
-                .IsRequired();
 
             modelBuilder.Entity<ClaseActividad>()
                 .HasKey(c => new { c.ActividadId, c.ClaseId });

@@ -21,7 +21,7 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Clase>))]
         public IActionResult GetClases()
         {
-            var clases = _mapper.Map<List<Clase>>(_clase.GetClases());
+            var clases = _mapper.Map<List<ClaseDto>>(_clase.GetClases());
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(clases);
@@ -33,7 +33,7 @@ namespace CCVAPIProyecto2.Controllers
         {
             if (!_clase.ClaseExiste(cId))
                 return NotFound();
-            var clase = _mapper.Map<Clase>(_clase.GetClase(cId));
+            var clase = _mapper.Map<ClaseDto>(_clase.GetClase(cId));
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(clase);
@@ -41,7 +41,7 @@ namespace CCVAPIProyecto2.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearClase([FromQuery] int claseId, [FromQuery] int estudiantesId, [FromQuery] int profesoresId, [FromBody] ClaseDto claseCreate)
+        public IActionResult CrearClase([FromQuery] string nombre, [FromQuery] int estudiantesId, [FromQuery] int profesoresId, [FromBody] ClaseDto claseCreate)
         {
             if (claseCreate == null)
                 return BadRequest(ModelState);
@@ -55,7 +55,7 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var claseMap = _mapper.Map<Clase>(claseCreate);
-            if (!_clase.CreateClase(claseId, estudiantesId, profesoresId, claseMap))
+            if (!_clase.CreateClase(nombre, estudiantesId, profesoresId, claseMap))
             {
                 ModelState.AddModelError("", "Algo salio mal");
                 return StatusCode(500, ModelState);
@@ -66,24 +66,23 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateClase(int claseId, [FromQuery] int estudianteId, [FromQuery] int profesorId, [FromBody] ClaseDto claseUpdate)
+        public IActionResult UpdateClase(string nombre, [FromQuery] int estudianteId, [FromQuery] int profesorId, [FromBody] ClaseDto claseUpdate)
         {
             if (claseUpdate == null)
                 return BadRequest(ModelState);
-            if (claseId != claseUpdate.Id)
+            if (nombre != claseUpdate.Nombre)
                 return BadRequest(ModelState);
-            if (!_clase.ClaseExiste(claseId))
+            if (!_clase.ClaseExiste(claseUpdate.Id)) // Cambiado de nombre a claseUpdate.Id
                 return NotFound();
             if (!ModelState.IsValid)
                 return BadRequest();
             var claseMap = _mapper.Map<Clase>(claseUpdate);
-            if (!_clase.UpdateClase(claseId, estudianteId, profesorId, claseMap))
+            if (!_clase.UpdateClase(claseUpdate.Nombre, estudianteId, profesorId, claseMap)) // Cambiado de nombre a claseUpdate.Id
             {
-                ModelState.AddModelError("", "Algo salion mal");
+                ModelState.AddModelError("", "Algo salio mal");
                 return StatusCode(500, ModelState);
             }
             return NoContent();
-
         }
         [HttpDelete("{claseId}")]
         [ProducesResponseType(400)]
