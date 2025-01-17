@@ -5,7 +5,6 @@ namespace CCVAPIProyecto2.Dto
 {
     public class EstudianteDto
     {
-        [JsonIgnore]
         public int Id { get; set; }
         //[Required(ErrorMessage = "Este campo es obligatorio.")]
         [JsonIgnore]

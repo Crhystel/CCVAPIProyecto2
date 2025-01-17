@@ -21,11 +21,8 @@ namespace CCVAPIProyecto2.Repositories
             var nombreClase = _context.Clases.SingleOrDefault(c => c.Nombre==nombre);
             //var estudianteClase = _context.Estudiantes.SingleOrDefault(e => e.Id == estudiantesId);
             //var profesorClase = _context.Profesores.SingleOrDefault(p => p.Id == profesoresId);
-
-            _context.Add(clase);
             clase.Nombre = nombre;
-           
-
+            _context.Add(clase);
             //var nuevoProfesorClase = new ClaseProfesor()
             //{
             //    ClaseP = nombreClase,

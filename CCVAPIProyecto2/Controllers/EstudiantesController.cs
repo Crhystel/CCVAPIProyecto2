@@ -74,20 +74,35 @@ namespace CCVAPIProyecto2.Controllers
         public IActionResult UpdateEstudiante(int estudianteId, [FromQuery] GradoEnum gradoId, [FromBody] EstudianteDto estudianteUpdate)
         {
             if (estudianteUpdate == null)
+            {
+                ModelState.AddModelError("", "No se encontró el estudiante");
                 return BadRequest(ModelState);
+            }
+
             if (estudianteId != estudianteUpdate.Id)
+            {
+                ModelState.AddModelError("", "No se encontró el estudianteid");
                 return BadRequest(ModelState);
+            }
+
             if (!_estudiante.EstudianteExiste(estudianteId))
+            {
                 return NotFound();
+            }
+
             if (!ModelState.IsValid)
-                return BadRequest();
+            {
+                return BadRequest(ModelState);
+            }
+
             var estudianteMap = _mapper.Map<Estudiante>(estudianteUpdate);
+
             if (!_estudiante.UpdateEstudiante(gradoId, estudianteMap))
             {
                 ModelState.AddModelError("", "Algo salió mal");
                 return StatusCode(500, ModelState);
-
             }
+
             return NoContent();
         }
         [HttpDelete("{deleteEstudianteId}")]
