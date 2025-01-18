@@ -26,18 +26,18 @@ namespace CCVAPIProyecto2.Controllers
                 return BadRequest(ModelState);
             return Ok(actividades);
         }
-        [HttpGet("{PorId}")]
-        [ProducesResponseType(200, Type = typeof(Actividad))]
-        [ProducesResponseType(400)]
-        public IActionResult GetActividad(int aId)
-        {
-            if (!_actividad.ActividadExiste(aId))
-                return NotFound();
-            var actividad = _mapper.Map<ActividadDto>(_actividad.GetActividad(aId));
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(actividad);
-        }
+        //[HttpGet("{PorId}")]
+        //[ProducesResponseType(200, Type = typeof(Actividad))]
+        //[ProducesResponseType(400)]
+        //public IActionResult GetActividad(int aId)
+        //{
+        //    if (!_actividad.ActividadExiste(aId))
+        //        return NotFound();
+        //    var actividad = _mapper.Map<ActividadDto>(_actividad.GetActividad(aId));
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+        //    return Ok(actividad);
+        //}
 
         [HttpPost]
         [ProducesResponseType(204)]
@@ -64,11 +64,11 @@ namespace CCVAPIProyecto2.Controllers
             return Ok("gucci");
 
         }
-        [HttpPut("{actividadId}")]
+        [HttpPut/*("{actividadId}")*/]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateActividad(/*[FromQuery] int claseId,*/ [FromQuery] int actividadId, [FromBody] ActividadDto actividadUpdate)
+        public IActionResult UpdateActividad(/*[FromQuery] int claseId,*/  int actividadId, [FromBody] ActividadDto actividadUpdate)
         {
             if (actividadUpdate == null)
                 return BadRequest(ModelState);

@@ -16,12 +16,11 @@ namespace CCVAPIProyecto2.Repositories
             return _context.Clases.Any(c => c.Id == id);
         }
 
-        public bool CreateClase(string nombre, /*int estudiantesId, int profesoresId, */Clase clase)
+        public bool CreateClase(int claseId, /*int estudiantesId, int profesoresId, */Clase clase)
         {
-            var nombreClase = _context.Clases.SingleOrDefault(c => c.Nombre==nombre);
             //var estudianteClase = _context.Estudiantes.SingleOrDefault(e => e.Id == estudiantesId);
             //var profesorClase = _context.Profesores.SingleOrDefault(p => p.Id == profesoresId);
-            clase.Nombre = nombre;
+            
             _context.Add(clase);
             //var nuevoProfesorClase = new ClaseProfesor()
             //{
@@ -64,7 +63,7 @@ namespace CCVAPIProyecto2.Repositories
             return saved > 0 ? true : false;
         }
 
-        public bool UpdateClase(string nombre, /*int estudiantesId, int profesoresId, */Clase clase)
+        public bool UpdateClase(int claseId, /*int estudiantesId, int profesoresId, */Clase clase)
         {
             _context.Update(clase);
             return Save();

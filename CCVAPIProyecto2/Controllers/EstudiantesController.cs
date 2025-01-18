@@ -31,18 +31,18 @@ namespace CCVAPIProyecto2.Controllers
             return Ok(estudiantes);
 
         }
-        [HttpGet("{PorId}")]
-        [ProducesResponseType(200, Type = typeof(Estudiante))]
-        [ProducesResponseType(400)]
-        public IActionResult GetEstudiante(int eId)
-        {
-            if (!_estudiante.EstudianteExiste(eId))
-                return NotFound();
-            var estudiante = _mapper.Map<EstudianteDto>(_estudiante.GetEstudiante(eId));
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(estudiante);
-        }
+        //[HttpGet("{PorId}")]
+        //[ProducesResponseType(200, Type = typeof(Estudiante))]
+        //[ProducesResponseType(400)]
+        //public IActionResult GetEstudiante(int eId)
+        //{
+        //    if (!_estudiante.EstudianteExiste(eId))
+        //        return NotFound();
+        //    var estudiante = _mapper.Map<EstudianteDto>(_estudiante.GetEstudiante(eId));
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+        //    return Ok(estudiante);
+        //}
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -67,7 +67,7 @@ namespace CCVAPIProyecto2.Controllers
             }
             return Ok("gucci");
         }
-        [HttpPut("{estudianteId}")]
+        [HttpPut/*("{estudianteId}")*/]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -105,7 +105,7 @@ namespace CCVAPIProyecto2.Controllers
 
             return NoContent();
         }
-        [HttpDelete("{deleteEstudianteId}")]
+        [HttpDelete/*("{deleteEstudianteId}")*/]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
