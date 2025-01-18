@@ -43,7 +43,9 @@ namespace CCVAPIProyecto2.Repositories
 
         public bool DeleteClase(Clase clase)
         {
-            _context.Remove(clase);
+            var actividadesRelacionadas = _context.ClaseActividades.Where(ca => ca.ClaseId == clase.Id);
+            _context.RemoveRange(actividadesRelacionadas);
+            _context.Clases.Remove(clase);
             return Save();
         }
 

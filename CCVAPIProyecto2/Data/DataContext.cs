@@ -37,12 +37,12 @@ namespace CCVAPIProyecto2.Data
                 .HasOne(c => c.Profesor)
                 .WithMany(c => c.ClaseProfesores)
                 .HasForeignKey(c => c.ProfesorId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<ClaseProfesor>()
                 .HasOne(c => c.ClaseP)
                 .WithMany(c => c.ClaseProfesores)
                 .HasForeignKey(c => c.ClasePId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ClaseActividad>()
                 .HasKey(c => new { c.ActividadId, c.ClaseId });
@@ -50,19 +50,19 @@ namespace CCVAPIProyecto2.Data
                 .HasOne(c => c.Actividad)
                 .WithMany(c => c.ClaseActividades)
                 .HasForeignKey(c => c.ActividadId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<ClaseActividad>()
                 .HasOne(c => c.Clase)
                 .WithMany(c => c.ClaseActividades)
                 .HasForeignKey(c => c.ClaseId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<ActividadEstudiante>()
                 .HasKey(c => new { c.ActividadId, c.EstudianteId });
             modelBuilder.Entity<ActividadEstudiante>()
                 .HasOne(c => c.Estudiante)
                 .WithMany(c => c.ActividadEstudiantes)
                 .HasForeignKey(c => c.EstudianteId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<ActividadEstudiante>()
                 .HasOne(c => c.Actividad)
                 .WithMany(c => c.ActividadEstudiantes)

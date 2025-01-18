@@ -63,7 +63,7 @@ namespace CCVAPIProyecto2.Controllers
             }
             return Ok("gucci");
         }
-        [HttpPut("{profesorId}")]
+        [HttpPut/*("{profesorId}")*/]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
