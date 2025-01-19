@@ -42,7 +42,7 @@ namespace CCVAPIProyecto2.Controllers
             }
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            if (!_claseEstudiante.CreateClaseEstudiante(claseId, estudianteId/*, claseEstudianteCreate*/))
+            if (!_claseEstudiante.CreateClaseEstudiante(claseId, estudianteId))
             {
                 ModelState.AddModelError("", $"Algo salio mal guardando el registro ");
                 return StatusCode(500, ModelState);
