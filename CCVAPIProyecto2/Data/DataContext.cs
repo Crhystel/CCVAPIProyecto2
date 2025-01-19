@@ -31,58 +31,58 @@ namespace CCVAPIProyecto2.Data
             base.OnModelCreating(modelBuilder);
 
 
-            modelBuilder.Entity<ClaseProfesor>()
-                .HasKey(c => c.Id);
-            modelBuilder.Entity<ClaseProfesor>()
-                .HasOne(c => c.Profesor)
-                .WithMany(c => c.ClaseProfesores)
-                .HasForeignKey(c => c.ProfesorId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<ClaseProfesor>()
-                .HasOne(c => c.ClaseP)
-                .WithMany(c => c.ClaseProfesores)
-                .HasForeignKey(c => c.ClasePId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<ClaseProfesor>()
+            //    .HasKey(c => c.Id);
+            //modelBuilder.Entity<ClaseProfesor>()
+            //    .HasOne(c => c.Profesor)
+            //    .WithMany(c => c.ClaseProfesores)
+            //    .HasForeignKey(c => c.ProfesorId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<ClaseProfesor>()
+            //    .HasOne(c => c.ClaseP)
+            //    .WithMany(c => c.ClaseProfesores)
+            //    .HasForeignKey(c => c.ClasePId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ClaseActividad>()
-                .HasKey(c => c.Id);
-            modelBuilder.Entity<ClaseActividad>()
-                .HasOne(c => c.Actividad)
-                .WithMany(c => c.ClaseActividades)
-                .HasForeignKey(c => c.ActividadId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<ClaseActividad>()
-                .HasOne(c => c.Clase)
-                .WithMany(c => c.ClaseActividades)
-                .HasForeignKey(c => c.ClaseId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<ActividadEstudiante>()
-                .HasKey(c => c.Id);
-            modelBuilder.Entity<ActividadEstudiante>()
-                .HasOne(c => c.Estudiante)
-                .WithMany(c => c.ActividadEstudiantes)
-                .HasForeignKey(c => c.EstudianteId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<ActividadEstudiante>()
-                .HasOne(c => c.Actividad)
-                .WithMany(c => c.ActividadEstudiantes)
-                .HasForeignKey(c => c.ActividadId);
-            modelBuilder.Entity<ActividadProfesor>()
-                .HasKey(c => c.Id);
-            modelBuilder.Entity<ActividadProfesor>()
-                .HasOne(c => c.Profesor)
-                .WithMany(c => c.ActividadProfesores)
-                .HasForeignKey(c => c.ProfesorId);
-            modelBuilder.Entity<ActividadProfesor>()
-                .HasOne(c => c.Actividad)
-                .WithMany(c => c.ActividadProfesores)
-                .HasForeignKey(c => c.ActividadId);
-            modelBuilder.Entity<Profesor>()
-                .Property(p => p.Materia)
-                .HasConversion<string>();
-            modelBuilder.Entity<Estudiante>()
-                .Property(p => p.Grado)
-                .HasConversion<string>();
+            //modelBuilder.Entity<ClaseActividad>()
+            //    .HasKey(c => c.Id);
+            //modelBuilder.Entity<ClaseActividad>()
+            //    .HasOne(c => c.Actividad)
+            //    .WithMany(c => c.ClaseActividades)
+            //    .HasForeignKey(c => c.ActividadId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<ClaseActividad>()
+            //    .HasOne(c => c.Clase)
+            //    .WithMany(c => c.ClaseActividades)
+            //    .HasForeignKey(c => c.ClaseId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<ActividadEstudiante>()
+            //    .HasKey(c => c.Id);
+            //modelBuilder.Entity<ActividadEstudiante>()
+            //    .HasOne(c => c.Estudiante)
+            //    .WithMany(c => c.ActividadEstudiantes)
+            //    .HasForeignKey(c => c.EstudianteId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<ActividadEstudiante>()
+            //    .HasOne(c => c.Actividad)
+            //    .WithMany(c => c.ActividadEstudiantes)
+            //    .HasForeignKey(c => c.ActividadId);
+            //modelBuilder.Entity<ActividadProfesor>()
+            //    .HasKey(c => c.Id);
+            //modelBuilder.Entity<ActividadProfesor>()
+            //    .HasOne(c => c.Profesor)
+            //    .WithMany(c => c.ActividadProfesores)
+            //    .HasForeignKey(c => c.ProfesorId);
+            //modelBuilder.Entity<ActividadProfesor>()
+            //    .HasOne(c => c.Actividad)
+            //    .WithMany(c => c.ActividadProfesores)
+            //    .HasForeignKey(c => c.ActividadId);
+            //modelBuilder.Entity<Profesor>()
+            //    .Property(p => p.Materia)
+            //    .HasConversion<string>();
+            //modelBuilder.Entity<Estudiante>()
+            //    .Property(p => p.Grado)
+            //    .HasConversion<string>();
             modelBuilder.Entity<Administrador>().HasData(new Administrador
             {
                 Id = 1,

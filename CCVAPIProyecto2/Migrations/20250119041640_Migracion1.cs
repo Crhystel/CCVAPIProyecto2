@@ -64,7 +64,7 @@ namespace CCVAPIProyecto2.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Grado = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Grado = table.Column<int>(type: "int", nullable: false),
                     Cedula = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     NombreUsuario = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
@@ -107,7 +107,7 @@ namespace CCVAPIProyecto2.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Materia = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Materia = table.Column<int>(type: "int", nullable: false),
                     Cedula = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     NombreUsuario = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
@@ -179,8 +179,7 @@ namespace CCVAPIProyecto2.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClaseId = table.Column<int>(type: "int", nullable: false),
-                    EstudianteId = table.Column<int>(type: "int", nullable: false),
-                    GradoId = table.Column<int>(type: "int", nullable: false)
+                    EstudianteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -195,12 +194,6 @@ namespace CCVAPIProyecto2.Migrations
                         name: "FK_ClaseEstudiantes_Estudiantes_EstudianteId",
                         column: x => x.EstudianteId,
                         principalTable: "Estudiantes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ClaseEstudiantes_Grados_GradoId",
-                        column: x => x.GradoId,
-                        principalTable: "Grados",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -265,12 +258,12 @@ namespace CCVAPIProyecto2.Migrations
             migrationBuilder.InsertData(
                 table: "Estudiantes",
                 columns: new[] { "Id", "Cedula", "Contrasenia", "Edad", "Grado", "Nombre", "NombreUsuario", "Rol" },
-                values: new object[] { 1, "0111111111", "crhys", 19, "Primer_Bachillerato_BGU", "Crhystel", "crhys", 1 });
+                values: new object[] { 1, "0111111111", "crhys", 19, 0, "Crhystel", "crhys", 1 });
 
             migrationBuilder.InsertData(
                 table: "Profesores",
                 columns: new[] { "Id", "Cedula", "Contrasenia", "Edad", "Materia", "Nombre", "NombreUsuario", "Rol" },
-                values: new object[] { 1, "0111111122", "yuli", 19, "Biologia", "Yuliana", "yuli", 2 });
+                values: new object[] { 1, "0111111122", "yuli", 19, 0, "Yuliana", "yuli", 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ActividadEstudiantes_ActividadId",
@@ -313,11 +306,6 @@ namespace CCVAPIProyecto2.Migrations
                 column: "EstudianteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClaseEstudiantes_GradoId",
-                table: "ClaseEstudiantes",
-                column: "GradoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ClaseProfesores_ClasePId",
                 table: "ClaseProfesores",
                 column: "ClasePId");
@@ -350,6 +338,9 @@ namespace CCVAPIProyecto2.Migrations
                 name: "ClaseProfesores");
 
             migrationBuilder.DropTable(
+                name: "Grados");
+
+            migrationBuilder.DropTable(
                 name: "Materias");
 
             migrationBuilder.DropTable(
@@ -357,9 +348,6 @@ namespace CCVAPIProyecto2.Migrations
 
             migrationBuilder.DropTable(
                 name: "Estudiantes");
-
-            migrationBuilder.DropTable(
-                name: "Grados");
 
             migrationBuilder.DropTable(
                 name: "Clases");

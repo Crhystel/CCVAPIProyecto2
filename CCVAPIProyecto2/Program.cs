@@ -17,6 +17,7 @@ builder.Services.AddScoped<IActividad, ActividadRepository>();
 builder.Services.AddScoped<IActividadProfesor, ActividadProfesorRepository>();
 builder.Services.AddScoped<IActividadEstudiante, ActividadEstudianteRepository>();
 builder.Services.AddScoped<IClaseActividad, ClaseActividadRepository>();
+builder.Services.AddScoped<IClaseEstudiante, ClaseEstudianteRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.WebHost.ConfigureKestrel(options =>
 {

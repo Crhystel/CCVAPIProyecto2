@@ -14,7 +14,5 @@ namespace CCVAPIProyecto2.Models
         public int EstudianteId { get; set; }
 
         public Estudiante Estudiante { get; set; }
-        [Required]
-        public Grado Grado { get; set; }
     }
 }

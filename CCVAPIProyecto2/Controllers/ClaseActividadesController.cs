@@ -74,12 +74,12 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteClaseActividad(int caId,[FromQuery] int claseId, [FromQuery] int actividadId, [FromBody] ClaseActividadDto claseActividadUpdate)
+        public IActionResult DeleteClaseActividad([FromQuery] int claseId, [FromQuery] int actividadId, [FromBody] ClaseActividadDto claseActividadUpdate)
         {
             if (!_claseActividad.ClaseActividadExiste(claseId, actividadId))
             {
                 ModelState.AddModelError("", "ClaseActividad no existe");
-                return StatusCode(422, ModelState);
+                return StatusCode(404, ModelState);
             }
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

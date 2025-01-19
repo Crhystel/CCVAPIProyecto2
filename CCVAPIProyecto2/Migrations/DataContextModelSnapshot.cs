@@ -200,16 +200,11 @@ namespace CCVAPIProyecto2.Migrations
                     b.Property<int>("EstudianteId")
                         .HasColumnType("int");
 
-                    b.Property<int>("GradoId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClaseId");
 
                     b.HasIndex("EstudianteId");
-
-                    b.HasIndex("GradoId");
 
                     b.ToTable("ClaseEstudiantes");
                 });
@@ -258,9 +253,8 @@ namespace CCVAPIProyecto2.Migrations
                     b.Property<int>("Edad")
                         .HasColumnType("int");
 
-                    b.Property<string>("Grado")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Grado")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -286,7 +280,7 @@ namespace CCVAPIProyecto2.Migrations
                             Cedula = "0111111111",
                             Contrasenia = "crhys",
                             Edad = 19,
-                            Grado = "Primer_Bachillerato_BGU",
+                            Grado = 0,
                             Nombre = "Crhystel",
                             NombreUsuario = "crhys",
                             Rol = 1
@@ -340,9 +334,8 @@ namespace CCVAPIProyecto2.Migrations
                     b.Property<int>("Edad")
                         .HasColumnType("int");
 
-                    b.Property<string>("Materia")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Materia")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -368,7 +361,7 @@ namespace CCVAPIProyecto2.Migrations
                             Cedula = "0111111122",
                             Contrasenia = "yuli",
                             Edad = 19,
-                            Materia = "Biologia",
+                            Materia = 0,
                             Nombre = "Yuliana",
                             NombreUsuario = "yuli",
                             Rol = 2
@@ -446,17 +439,9 @@ namespace CCVAPIProyecto2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CCVAPIProyecto2.Models.Grado", "Grado")
-                        .WithMany()
-                        .HasForeignKey("GradoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Clase");
 
                     b.Navigation("Estudiante");
-
-                    b.Navigation("Grado");
                 });
 
             modelBuilder.Entity("CCVAPIProyecto2.Models.ClaseProfesor", b =>
