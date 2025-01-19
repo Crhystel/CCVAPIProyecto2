@@ -12,6 +12,7 @@ namespace CCVAPIProyecto2.Data
         {
 
         }
+        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Actividad> Actividades { get; set; }
         public DbSet<ActividadEstudiante> ActividadEstudiantes { get; set; }
         public DbSet<ActividadProfesor> ActividadProfesores { get; set; }
@@ -24,13 +25,15 @@ namespace CCVAPIProyecto2.Data
         public DbSet<Grado> Grados { get; set; }
         public DbSet<Administrador> Administrador { get; set; } = default!;
         public DbSet<Materia> Materias { get; set; }
+        
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-
+            modelBuilder.Entity<Estudiante>().ToTable("Estudiante");
+            modelBuilder.Entity<Profesor>().ToTable("Profesor");
+            modelBuilder.Entity<Administrador>().ToTable("Administrador");
             //modelBuilder.Entity<ClaseProfesor>()
             //    .HasKey(c => c.Id);
             //modelBuilder.Entity<ClaseProfesor>()
@@ -95,23 +98,25 @@ namespace CCVAPIProyecto2.Data
             });
             modelBuilder.Entity<Estudiante>().HasData(new Estudiante
             {
-                Id = 1,
+                Id = 2,
                 Cedula = "0111111111",
                 Nombre = "Crhystel",
                 NombreUsuario = "crhys",
                 Contrasenia = "crhys",
                 Edad = 19,
+                Grado = GradoEnum.Primer_Bachillerato_BGU,
                 Rol = RolEnum.Estudiante,
 
             });
             modelBuilder.Entity<Profesor>().HasData(new Profesor
             {
-                Id = 1,
+                Id = 3,
                 Cedula = "0111111122",
                 Nombre = "Yuliana",
                 NombreUsuario = "yuli",
                 Contrasenia = "yuli",
                 Edad = 19,
+                Materia= MateriaEnum.Matematicas,
                 Rol = RolEnum.Profesor,
 
             });

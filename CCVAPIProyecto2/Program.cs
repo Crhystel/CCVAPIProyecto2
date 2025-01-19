@@ -2,6 +2,7 @@ using CCVAPIProyecto2.Data;
 using CCVAPIProyecto2.Interfaces;
 using CCVAPIProyecto2.Models;
 using CCVAPIProyecto2.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ builder.Services.AddScoped<IClaseActividad, ClaseActividadRepository>();
 builder.Services.AddScoped<IClaseEstudiante, ClaseEstudianteRepository>();
 builder.Services.AddScoped<IClaseProfesor, ClaseProfesorRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(7129); // HTTPS
@@ -53,6 +55,9 @@ builder.Services.AddSwaggerGen(options =>
                     .ToList()
     });
 });
+//builder.Services.AddIdentityCore<IdentityUser>().AddEntityFrameworkStores<DataContext>().AddApiEndpoints();
+//builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+//builder.Services.AddAuthorizationBuilder();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
@@ -70,6 +75,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapIdentityApi<IdentityUser>();
 app.UseCors("AllowAll");
 
 app.MapControllers();
@@ -81,3 +87,4 @@ app.UseCors(builder =>
 app.MapControllers();
 
 app.Run();
+

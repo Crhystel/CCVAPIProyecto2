@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CCVAPIProyecto2.Migrations
 {
     /// <inheritdoc />
-    public partial class Migracion1 : Migration
+    public partial class Migracion476543 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,24 +30,6 @@ namespace CCVAPIProyecto2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Administrador",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Cedula = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    NombreUsuario = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Contrasenia = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Edad = table.Column<int>(type: "int", nullable: false),
-                    Rol = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Administrador", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Clases",
                 columns: table => new
                 {
@@ -56,25 +40,6 @@ namespace CCVAPIProyecto2.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clases", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Estudiantes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Grado = table.Column<int>(type: "int", nullable: false),
-                    Cedula = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    NombreUsuario = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Contrasenia = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Edad = table.Column<int>(type: "int", nullable: false),
-                    Rol = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Estudiantes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -102,12 +67,11 @@ namespace CCVAPIProyecto2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Profesores",
+                name: "Usuarios",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Materia = table.Column<int>(type: "int", nullable: false),
                     Cedula = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     NombreUsuario = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
@@ -117,7 +81,7 @@ namespace CCVAPIProyecto2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Profesores", x => x.Id);
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -147,6 +111,59 @@ namespace CCVAPIProyecto2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Administrador",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Administrador", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Administrador_Usuarios_Id",
+                        column: x => x.Id,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Estudiante",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Grado = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Estudiante", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Estudiante_Usuarios_Id",
+                        column: x => x.Id,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Profesor",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Materia = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Profesor", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Profesor_Usuarios_Id",
+                        column: x => x.Id,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ActividadEstudiantes",
                 columns: table => new
                 {
@@ -165,9 +182,9 @@ namespace CCVAPIProyecto2.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ActividadEstudiantes_Estudiantes_EstudianteId",
+                        name: "FK_ActividadEstudiantes_Estudiante_EstudianteId",
                         column: x => x.EstudianteId,
-                        principalTable: "Estudiantes",
+                        principalTable: "Estudiante",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -191,9 +208,9 @@ namespace CCVAPIProyecto2.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClaseEstudiantes_Estudiantes_EstudianteId",
+                        name: "FK_ClaseEstudiantes_Estudiante_EstudianteId",
                         column: x => x.EstudianteId,
-                        principalTable: "Estudiantes",
+                        principalTable: "Estudiante",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -217,9 +234,9 @@ namespace CCVAPIProyecto2.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ActividadProfesores_Profesores_ProfesorId",
+                        name: "FK_ActividadProfesores_Profesor_ProfesorId",
                         column: x => x.ProfesorId,
-                        principalTable: "Profesores",
+                        principalTable: "Profesor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -243,27 +260,37 @@ namespace CCVAPIProyecto2.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClaseProfesores_Profesores_ProfesorId",
+                        name: "FK_ClaseProfesores_Profesor_ProfesorId",
                         column: x => x.ProfesorId,
-                        principalTable: "Profesores",
+                        principalTable: "Profesor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "Administrador",
+                table: "Usuarios",
                 columns: new[] { "Id", "Cedula", "Contrasenia", "Edad", "Nombre", "NombreUsuario", "Rol" },
-                values: new object[] { 1, "1234567890", "admin", 30, "Roberto", "admin", 0 });
+                values: new object[,]
+                {
+                    { 1, "1234567890", "admin", 30, "Roberto", "admin", 0 },
+                    { 2, "0111111111", "crhys", 19, "Crhystel", "crhys", 1 },
+                    { 3, "0111111122", "yuli", 19, "Yuliana", "yuli", 2 }
+                });
 
             migrationBuilder.InsertData(
-                table: "Estudiantes",
-                columns: new[] { "Id", "Cedula", "Contrasenia", "Edad", "Grado", "Nombre", "NombreUsuario", "Rol" },
-                values: new object[] { 1, "0111111111", "crhys", 19, 0, "Crhystel", "crhys", 1 });
+                table: "Administrador",
+                column: "Id",
+                value: 1);
 
             migrationBuilder.InsertData(
-                table: "Profesores",
-                columns: new[] { "Id", "Cedula", "Contrasenia", "Edad", "Materia", "Nombre", "NombreUsuario", "Rol" },
-                values: new object[] { 1, "0111111122", "yuli", 19, 0, "Yuliana", "yuli", 2 });
+                table: "Estudiante",
+                columns: new[] { "Id", "Grado" },
+                values: new object[] { 2, 0 });
+
+            migrationBuilder.InsertData(
+                table: "Profesor",
+                columns: new[] { "Id", "Materia" },
+                values: new object[] { 3, 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ActividadEstudiantes_ActividadId",
@@ -347,13 +374,16 @@ namespace CCVAPIProyecto2.Migrations
                 name: "Actividades");
 
             migrationBuilder.DropTable(
-                name: "Estudiantes");
+                name: "Estudiante");
 
             migrationBuilder.DropTable(
                 name: "Clases");
 
             migrationBuilder.DropTable(
-                name: "Profesores");
+                name: "Profesor");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
         }
     }
 }

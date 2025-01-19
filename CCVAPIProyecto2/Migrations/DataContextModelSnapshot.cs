@@ -95,57 +95,6 @@ namespace CCVAPIProyecto2.Migrations
                     b.ToTable("ActividadProfesores");
                 });
 
-            modelBuilder.Entity("CCVAPIProyecto2.Models.Administrador", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Cedula")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Contrasenia")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int>("Edad")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("NombreUsuario")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<int>("Rol")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Administrador");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Cedula = "1234567890",
-                            Contrasenia = "admin",
-                            Edad = 30,
-                            Nombre = "Roberto",
-                            NombreUsuario = "admin",
-                            Rol = 0
-                        });
-                });
-
             modelBuilder.Entity("CCVAPIProyecto2.Models.Clase", b =>
                 {
                     b.Property<int>("Id")
@@ -232,61 +181,6 @@ namespace CCVAPIProyecto2.Migrations
                     b.ToTable("ClaseProfesores");
                 });
 
-            modelBuilder.Entity("CCVAPIProyecto2.Models.Estudiante", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Cedula")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Contrasenia")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int>("Edad")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Grado")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("NombreUsuario")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<int>("Rol")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Estudiantes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Cedula = "0111111111",
-                            Contrasenia = "crhys",
-                            Edad = 19,
-                            Grado = 0,
-                            Nombre = "Crhystel",
-                            NombreUsuario = "crhys",
-                            Rol = 1
-                        });
-                });
-
             modelBuilder.Entity("CCVAPIProyecto2.Models.Grado", b =>
                 {
                     b.Property<int>("Id")
@@ -313,7 +207,7 @@ namespace CCVAPIProyecto2.Migrations
                     b.ToTable("Materias");
                 });
 
-            modelBuilder.Entity("CCVAPIProyecto2.Models.Profesor", b =>
+            modelBuilder.Entity("CCVAPIProyecto2.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -334,9 +228,6 @@ namespace CCVAPIProyecto2.Migrations
                     b.Property<int>("Edad")
                         .HasColumnType("int");
 
-                    b.Property<int>("Materia")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -352,19 +243,73 @@ namespace CCVAPIProyecto2.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Profesores");
+                    b.ToTable("Usuarios");
+
+                    b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("CCVAPIProyecto2.Models.Administrador", b =>
+                {
+                    b.HasBaseType("CCVAPIProyecto2.Models.Usuario");
+
+                    b.ToTable("Administrador", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            Cedula = "1234567890",
+                            Contrasenia = "admin",
+                            Edad = 30,
+                            Nombre = "Roberto",
+                            NombreUsuario = "admin",
+                            Rol = 0
+                        });
+                });
+
+            modelBuilder.Entity("CCVAPIProyecto2.Models.Estudiante", b =>
+                {
+                    b.HasBaseType("CCVAPIProyecto2.Models.Usuario");
+
+                    b.Property<int>("Grado")
+                        .HasColumnType("int");
+
+                    b.ToTable("Estudiante", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            Cedula = "0111111111",
+                            Contrasenia = "crhys",
+                            Edad = 19,
+                            Nombre = "Crhystel",
+                            NombreUsuario = "crhys",
+                            Rol = 1,
+                            Grado = 0
+                        });
+                });
+
+            modelBuilder.Entity("CCVAPIProyecto2.Models.Profesor", b =>
+                {
+                    b.HasBaseType("CCVAPIProyecto2.Models.Usuario");
+
+                    b.Property<int>("Materia")
+                        .HasColumnType("int");
+
+                    b.ToTable("Profesor", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3,
                             Cedula = "0111111122",
                             Contrasenia = "yuli",
                             Edad = 19,
-                            Materia = 0,
                             Nombre = "Yuliana",
                             NombreUsuario = "yuli",
-                            Rol = 2
+                            Rol = 2,
+                            Materia = 2
                         });
                 });
 
@@ -461,6 +406,33 @@ namespace CCVAPIProyecto2.Migrations
                     b.Navigation("ClaseP");
 
                     b.Navigation("Profesor");
+                });
+
+            modelBuilder.Entity("CCVAPIProyecto2.Models.Administrador", b =>
+                {
+                    b.HasOne("CCVAPIProyecto2.Models.Usuario", null)
+                        .WithOne()
+                        .HasForeignKey("CCVAPIProyecto2.Models.Administrador", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CCVAPIProyecto2.Models.Estudiante", b =>
+                {
+                    b.HasOne("CCVAPIProyecto2.Models.Usuario", null)
+                        .WithOne()
+                        .HasForeignKey("CCVAPIProyecto2.Models.Estudiante", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CCVAPIProyecto2.Models.Profesor", b =>
+                {
+                    b.HasOne("CCVAPIProyecto2.Models.Usuario", null)
+                        .WithOne()
+                        .HasForeignKey("CCVAPIProyecto2.Models.Profesor", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CCVAPIProyecto2.Models.Actividad", b =>
