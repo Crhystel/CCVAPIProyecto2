@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CCVAPIProyecto2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250117024423_Migracion5")]
-    partial class Migracion5
+    [Migration("20250119030823_Migracion1")]
+    partial class Migracion1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,16 +54,21 @@ namespace CCVAPIProyecto2.Migrations
 
             modelBuilder.Entity("CCVAPIProyecto2.Models.ActividadEstudiante", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("ActividadId")
                         .HasColumnType("int");
 
                     b.Property<int>("EstudianteId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("ActividadId", "EstudianteId");
+                    b.HasIndex("ActividadId");
 
                     b.HasIndex("EstudianteId");
 
@@ -72,16 +77,21 @@ namespace CCVAPIProyecto2.Migrations
 
             modelBuilder.Entity("CCVAPIProyecto2.Models.ActividadProfesor", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("ActividadId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProfesorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("ActividadId", "ProfesorId");
+                    b.HasIndex("ActividadId");
 
                     b.HasIndex("ProfesorId");
 
@@ -158,16 +168,21 @@ namespace CCVAPIProyecto2.Migrations
 
             modelBuilder.Entity("CCVAPIProyecto2.Models.ClaseActividad", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("ActividadId")
                         .HasColumnType("int");
 
                     b.Property<int>("ClaseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("ActividadId", "ClaseId");
+                    b.HasIndex("ActividadId");
 
                     b.HasIndex("ClaseId");
 
@@ -204,18 +219,23 @@ namespace CCVAPIProyecto2.Migrations
 
             modelBuilder.Entity("CCVAPIProyecto2.Models.ClaseProfesor", b =>
                 {
-                    b.Property<int>("ProfesorId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClasePId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
+                    b.Property<int>("ProfesorId")
                         .HasColumnType("int");
 
-                    b.HasKey("ProfesorId", "ClasePId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ClasePId");
+
+                    b.HasIndex("ProfesorId");
 
                     b.ToTable("ClaseProfesores");
                 });
@@ -369,7 +389,7 @@ namespace CCVAPIProyecto2.Migrations
                     b.HasOne("CCVAPIProyecto2.Models.Estudiante", "Estudiante")
                         .WithMany("ActividadEstudiantes")
                         .HasForeignKey("EstudianteId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Actividad");
@@ -401,13 +421,13 @@ namespace CCVAPIProyecto2.Migrations
                     b.HasOne("CCVAPIProyecto2.Models.Actividad", "Actividad")
                         .WithMany("ClaseActividades")
                         .HasForeignKey("ActividadId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CCVAPIProyecto2.Models.Clase", "Clase")
                         .WithMany("ClaseActividades")
                         .HasForeignKey("ClaseId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Actividad");
@@ -447,13 +467,13 @@ namespace CCVAPIProyecto2.Migrations
                     b.HasOne("CCVAPIProyecto2.Models.Clase", "ClaseP")
                         .WithMany("ClaseProfesores")
                         .HasForeignKey("ClasePId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CCVAPIProyecto2.Models.Profesor", "Profesor")
                         .WithMany("ClaseProfesores")
                         .HasForeignKey("ProfesorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ClaseP");

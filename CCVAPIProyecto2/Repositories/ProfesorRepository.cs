@@ -34,7 +34,7 @@ namespace CCVAPIProyecto2.Repositories
 
         public ICollection<Profesor> GetProfesores()
         {
-            return _context.Profesores.OrderBy(c => c.Nombre).ToList();
+            return _context.Profesores.OrderBy(c => c.Id).ToList();
         }
 
         public bool ProfesorExiste(int id)

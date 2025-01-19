@@ -27,42 +27,42 @@ namespace CCVAPIProyecto2.Controllers
             return Ok(actividadProfesor);
 
         }
-        [HttpGet("{PorId}")]
-        [ProducesResponseType(200, Type = typeof(ActividadProfesor))]
-        [ProducesResponseType(400)]
-        public IActionResult GetActividadProfesor(int apId)
-        {
-            if (!_actividadProfesor.ActividadProfesorExiste(apId))
-                return NotFound();
-            var actividadProfesor = _mapper.Map<ActividadProfesorDto>(_actividadProfesor.GetActividadProfesor(apId));
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(actividadProfesor);
-        }
-        [HttpGet("{PorPorfesor}")]
-        [ProducesResponseType(200, Type = typeof(ActividadProfesor))]
-        [ProducesResponseType(400)]
-        public IActionResult GetActividadProfesorPorProfesor(int pId)
-        {
-            if (!_actividadProfesor.ActividadProfesorExiste(pId))
-                return NotFound();
-            var actividadProfesor = _mapper.Map<ActividadProfesorDto>(_actividadProfesor.GetActividadProfesorPorProfesor(pId));
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(actividadProfesor);
-        }
-        [HttpGet("{PorActividad}")]
-        [ProducesResponseType(200, Type = typeof(ActividadProfesor))]
-        [ProducesResponseType(400)]
-        public IActionResult GetActividadProfesorPorActividad(int aId)
-        {
-            if (!_actividadProfesor.ActividadProfesorExiste(aId))
-                return NotFound();
-            var actividadProfesor = _mapper.Map<ActividadProfesorDto>(_actividadProfesor.GetActividadProfesorPorActividad(aId));
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            return Ok(actividadProfesor);
-        }
+        //[HttpGet("{PorId}")]
+        //[ProducesResponseType(200, Type = typeof(ActividadProfesor))]
+        //[ProducesResponseType(400)]
+        //public IActionResult GetActividadProfesor(int apId)
+        //{
+        //    if (!_actividadProfesor.ActividadProfesorExiste(apId))
+        //        return NotFound();
+        //    var actividadProfesor = _mapper.Map<ActividadProfesorDto>(_actividadProfesor.GetActividadProfesor(apId));
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+        //    return Ok(actividadProfesor);
+        //}
+        //[HttpGet("{PorPorfesor}")]
+        //[ProducesResponseType(200, Type = typeof(ActividadProfesor))]
+        //[ProducesResponseType(400)]
+        //public IActionResult GetActividadProfesorPorProfesor(int pId)
+        //{
+        //    if (!_actividadProfesor.ActividadProfesorExiste(pId))
+        //        return NotFound();
+        //    var actividadProfesor = _mapper.Map<ActividadProfesorDto>(_actividadProfesor.GetActividadProfesorPorProfesor(pId));
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+        //    return Ok(actividadProfesor);
+        //}
+        //[HttpGet("{PorActividad}")]
+        //[ProducesResponseType(200, Type = typeof(ActividadProfesor))]
+        //[ProducesResponseType(400)]
+        //public IActionResult GetActividadProfesorPorActividad(int aId)
+        //{
+        //    if (!_actividadProfesor.ActividadProfesorExiste(aId))
+        //        return NotFound();
+        //    var actividadProfesor = _mapper.Map<ActividadProfesorDto>(_actividadProfesor.GetActividadProfesorPorActividad(aId));
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+        //    return Ok(actividadProfesor);
+        //}
 
     }
 }

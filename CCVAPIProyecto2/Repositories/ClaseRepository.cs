@@ -18,10 +18,10 @@ namespace CCVAPIProyecto2.Repositories
 
         public bool CreateClase(int claseId, /*int estudiantesId, int profesoresId, */Clase clase)
         {
+            _context.Add(clase);
+            return Save();
             //var estudianteClase = _context.Estudiantes.SingleOrDefault(e => e.Id == estudiantesId);
             //var profesorClase = _context.Profesores.SingleOrDefault(p => p.Id == profesoresId);
-            
-            _context.Add(clase);
             //var nuevoProfesorClase = new ClaseProfesor()
             //{
             //    ClaseP = nombreClase,
@@ -34,15 +34,13 @@ namespace CCVAPIProyecto2.Repositories
             //    Estudiante = estudianteClase
             //};
             //_context.Add(nuevoEstudianteClase);
-            
-
-            return Save();
         }
 
 
 
         public bool DeleteClase(Clase clase)
         {
+            //eliminar relaciones con claves foraneas
             var actividadesRelacionadas = _context.ClaseActividades.Where(ca => ca.ClaseId == clase.Id);
             _context.RemoveRange(actividadesRelacionadas);
             _context.Clases.Remove(clase);

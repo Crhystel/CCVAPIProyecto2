@@ -13,8 +13,9 @@ namespace CCVAPIProyecto2.Helper
             CreateMap<Profesor, ProfesorDto>();
             CreateMap<ProfesorDto, Profesor>();
             CreateMap<ClaseDto, Clase>();
-
             CreateMap<Clase, ClaseDto>();
+            CreateMap<ClaseActividad, ClaseActividadDto>();
+            CreateMap<ClaseActividadDto, ClaseActividad>();
 
             CreateMap<Actividad, ActividadDto>();
             CreateMap<ActividadDto, Actividad>();

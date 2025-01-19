@@ -50,7 +50,8 @@ namespace CCVAPIProyecto2.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -123,38 +124,40 @@ namespace CCVAPIProyecto2.Migrations
                 name: "ClaseActividades",
                 columns: table => new
                 {
-                    ClaseId = table.Column<int>(type: "int", nullable: false),
-                    ActividadId = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClaseId = table.Column<int>(type: "int", nullable: false),
+                    ActividadId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClaseActividades", x => new { x.ActividadId, x.ClaseId });
+                    table.PrimaryKey("PK_ClaseActividades", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ClaseActividades_Actividades_ActividadId",
                         column: x => x.ActividadId,
                         principalTable: "Actividades",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ClaseActividades_Clases_ClaseId",
                         column: x => x.ClaseId,
                         principalTable: "Clases",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ActividadEstudiantes",
                 columns: table => new
                 {
-                    EstudianteId = table.Column<int>(type: "int", nullable: false),
-                    ActividadId = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EstudianteId = table.Column<int>(type: "int", nullable: false),
+                    ActividadId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ActividadEstudiantes", x => new { x.ActividadId, x.EstudianteId });
+                    table.PrimaryKey("PK_ActividadEstudiantes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ActividadEstudiantes_Actividades_ActividadId",
                         column: x => x.ActividadId,
@@ -166,7 +169,7 @@ namespace CCVAPIProyecto2.Migrations
                         column: x => x.EstudianteId,
                         principalTable: "Estudiantes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -177,7 +180,7 @@ namespace CCVAPIProyecto2.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClaseId = table.Column<int>(type: "int", nullable: false),
                     EstudianteId = table.Column<int>(type: "int", nullable: false),
-                    Grado = table.Column<int>(type: "int", nullable: false)
+                    GradoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -194,19 +197,26 @@ namespace CCVAPIProyecto2.Migrations
                         principalTable: "Estudiantes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClaseEstudiantes_Grados_GradoId",
+                        column: x => x.GradoId,
+                        principalTable: "Grados",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ActividadProfesores",
                 columns: table => new
                 {
-                    ProfesorId = table.Column<int>(type: "int", nullable: false),
-                    ActividadId = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProfesorId = table.Column<int>(type: "int", nullable: false),
+                    ActividadId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ActividadProfesores", x => new { x.ActividadId, x.ProfesorId });
+                    table.PrimaryKey("PK_ActividadProfesores", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ActividadProfesores_Actividades_ActividadId",
                         column: x => x.ActividadId,
@@ -225,26 +235,26 @@ namespace CCVAPIProyecto2.Migrations
                 name: "ClaseProfesores",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ClasePId = table.Column<int>(type: "int", nullable: false),
-                    ProfesorId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Materia = table.Column<int>(type: "int", nullable: false)
+                    ProfesorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClaseProfesores", x => new { x.ProfesorId, x.ClasePId });
+                    table.PrimaryKey("PK_ClaseProfesores", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ClaseProfesores_Clases_ClasePId",
                         column: x => x.ClasePId,
                         principalTable: "Clases",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ClaseProfesores_Profesores_ProfesorId",
                         column: x => x.ProfesorId,
                         principalTable: "Profesores",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -263,14 +273,29 @@ namespace CCVAPIProyecto2.Migrations
                 values: new object[] { 1, "0111111122", "yuli", 19, "Biologia", "Yuliana", "yuli", 2 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ActividadEstudiantes_ActividadId",
+                table: "ActividadEstudiantes",
+                column: "ActividadId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ActividadEstudiantes_EstudianteId",
                 table: "ActividadEstudiantes",
                 column: "EstudianteId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ActividadProfesores_ActividadId",
+                table: "ActividadProfesores",
+                column: "ActividadId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ActividadProfesores_ProfesorId",
                 table: "ActividadProfesores",
                 column: "ProfesorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClaseActividades_ActividadId",
+                table: "ClaseActividades",
+                column: "ActividadId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClaseActividades_ClaseId",
@@ -288,9 +313,19 @@ namespace CCVAPIProyecto2.Migrations
                 column: "EstudianteId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ClaseEstudiantes_GradoId",
+                table: "ClaseEstudiantes",
+                column: "GradoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ClaseProfesores_ClasePId",
                 table: "ClaseProfesores",
                 column: "ClasePId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClaseProfesores_ProfesorId",
+                table: "ClaseProfesores",
+                column: "ProfesorId");
         }
 
         /// <inheritdoc />
@@ -315,9 +350,6 @@ namespace CCVAPIProyecto2.Migrations
                 name: "ClaseProfesores");
 
             migrationBuilder.DropTable(
-                name: "Grados");
-
-            migrationBuilder.DropTable(
                 name: "Materias");
 
             migrationBuilder.DropTable(
@@ -325,6 +357,9 @@ namespace CCVAPIProyecto2.Migrations
 
             migrationBuilder.DropTable(
                 name: "Estudiantes");
+
+            migrationBuilder.DropTable(
+                name: "Grados");
 
             migrationBuilder.DropTable(
                 name: "Clases");
