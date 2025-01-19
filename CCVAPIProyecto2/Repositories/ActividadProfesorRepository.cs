@@ -1,5 +1,6 @@
 ﻿using CCVAPIProyecto2.Data;
 using CCVAPIProyecto2.Interfaces;
+using CCVAPIProyecto2.Models;
 
 namespace CCVAPIProyecto2.Repositories
 {
@@ -10,29 +11,51 @@ namespace CCVAPIProyecto2.Repositories
         {
             _context = context;
         }
-        public Models.ActividadProfesor GetActividadProfesor(int apId)
+
+        public bool ActividadProfesorExiste(int apId)
         {
-            return _context.ActividadProfesores.Where(c => c.Id == apId).FirstOrDefault();
+            return _context.ActividadProfesores.Any(a => a.Id == apId);
         }
 
-        public ICollection<Models.ActividadProfesor> GetActividadProfesores()
+        public bool CreateActividadProfesor(int actividadId, int profesorId)
         {
-            return _context.ActividadProfesores.OrderBy(c => c.Id).ToList();
+            var actividad = _context.Actividades.FirstOrDefault(a => a.Id == actividadId);
+            var profesor = _context.Profesores.FirstOrDefault(p => p.Id == profesorId);
+            var actividadProfesor = new ActividadProfesor
+            {
+                ActividadId = actividadId,
+                ProfesorId = profesorId,
+            };
+            _context.Add(actividadProfesor);
+            return Save();
         }
 
-        public Models.ActividadProfesor GetActividadProfesorPorActividad(int aId)
+        public bool DeleteActividadProfesor(ActividadProfesor actividadProfesor)
         {
-            return _context.ActividadProfesores.Where(c => c.ActividadId == aId).FirstOrDefault();
+            _context.Remove(actividadProfesor);
+            return Save();
         }
 
-        public Models.ActividadProfesor GetActividadProfesorPorProfesor(int pId)
+        public ActividadProfesor GetActividadProfesor(int apId)
         {
-            return _context.ActividadProfesores.Where(c => c.ProfesorId == pId).FirstOrDefault();
+            return _context.ActividadProfesores.Where(a => a.Id == apId).FirstOrDefault();
         }
 
-        public bool ActividadProfesorExiste(int aeId)
+        public ICollection<ActividadProfesor> GetActividadProfesores()
         {
-            return _context.ActividadProfesores.Any(c => c.Id == aeId);
+            return _context.ActividadProfesores.OrderBy(a => a.Id).ToList();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
+
+        public bool UpdateActividadProfesor(int apId, ActividadProfesor actividadProfesor)
+        {
+            _context.Update(actividadProfesor);
+            return Save();
         }
     }
 }

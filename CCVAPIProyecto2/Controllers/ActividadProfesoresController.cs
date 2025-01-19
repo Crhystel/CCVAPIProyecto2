@@ -27,42 +27,68 @@ namespace CCVAPIProyecto2.Controllers
             return Ok(actividadProfesor);
 
         }
-        //[HttpGet("{PorId}")]
-        //[ProducesResponseType(200, Type = typeof(ActividadProfesor))]
-        //[ProducesResponseType(400)]
-        //public IActionResult GetActividadProfesor(int apId)
-        //{
-        //    if (!_actividadProfesor.ActividadProfesorExiste(apId))
-        //        return NotFound();
-        //    var actividadProfesor = _mapper.Map<ActividadProfesorDto>(_actividadProfesor.GetActividadProfesor(apId));
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-        //    return Ok(actividadProfesor);
-        //}
-        //[HttpGet("{PorPorfesor}")]
-        //[ProducesResponseType(200, Type = typeof(ActividadProfesor))]
-        //[ProducesResponseType(400)]
-        //public IActionResult GetActividadProfesorPorProfesor(int pId)
-        //{
-        //    if (!_actividadProfesor.ActividadProfesorExiste(pId))
-        //        return NotFound();
-        //    var actividadProfesor = _mapper.Map<ActividadProfesorDto>(_actividadProfesor.GetActividadProfesorPorProfesor(pId));
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-        //    return Ok(actividadProfesor);
-        //}
-        //[HttpGet("{PorActividad}")]
-        //[ProducesResponseType(200, Type = typeof(ActividadProfesor))]
-        //[ProducesResponseType(400)]
-        //public IActionResult GetActividadProfesorPorActividad(int aId)
-        //{
-        //    if (!_actividadProfesor.ActividadProfesorExiste(aId))
-        //        return NotFound();
-        //    var actividadProfesor = _mapper.Map<ActividadProfesorDto>(_actividadProfesor.GetActividadProfesorPorActividad(aId));
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-        //    return Ok(actividadProfesor);
-        //}
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CrearActividadProfesor([FromQuery] int actividadId, [FromQuery] int profesorId, [FromBody] ActividadProfesorDto actividadProfesorCreate)
+        {
+            if (actividadProfesorCreate == null)
+                return BadRequest(ModelState);
+            var actividadProfesor = _actividadProfesor.GetActividadProfesores()
+                .Where(c => c.ActividadId == actividadId && c.ProfesorId == profesorId).FirstOrDefault();
+            if (actividadProfesor != null)
+            {
+                ModelState.AddModelError("", "ActividadProfesor ya existe");
+                return StatusCode(422, ModelState);
+            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            if (!_actividadProfesor.CreateActividadProfesor(actividadId, profesorId))
+            {
+                ModelState.AddModelError("", $"Algo salio mal guardando el registro ");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("gucci");
+        }
+        [HttpPut]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateActividadProfesor([FromQuery] int apId, [FromBody] ActividadProfesorDto actividadProfesorUpdate)
+        {
+            if (actividadProfesorUpdate == null)
+                return BadRequest(ModelState);
+            if (!_actividadProfesor.ActividadProfesorExiste(apId))
+            {
+                ModelState.AddModelError("", "ActividadProfesor no existe");
+                return StatusCode(404, ModelState);
+            }
+            var actividadProfesor = _mapper.Map<ActividadProfesor>(actividadProfesorUpdate);
+            if (!_actividadProfesor.UpdateActividadProfesor(apId, actividadProfesor))
+            {
+                ModelState.AddModelError("", $"Algo salio mal actualizando el registro");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("gucci");
+        }
+        [HttpDelete]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult DeleteActividadProfesor([FromQuery] int apId)
+        {
+            var actividadProfesor = _actividadProfesor.GetActividadProfesor(apId);
+            if (actividadProfesor == null)
+            {
+                ModelState.AddModelError("", "ActividadProfesor no existe");
+                return StatusCode(404, ModelState);
+            }
+            if (!_actividadProfesor.DeleteActividadProfesor(actividadProfesor))
+            {
+                ModelState.AddModelError("", $"Algo salio mal eliminando el registro");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("gucci");
+        }
 
     }
 }
