@@ -53,16 +53,17 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateClaseEstudiante([FromQuery] int claseId, [FromQuery] int estudianteId, [FromBody] ClaseEstudianteDto claseEstudianteUpdate)
+        public IActionResult UpdateClaseEstudiante([FromQuery] int ceId,/*[FromQuery] int claseId, [FromQuery] int estudianteId,*/ [FromBody] ClaseEstudianteDto claseEstudianteUpdate)
         {
             if (claseEstudianteUpdate == null)
                 return BadRequest(ModelState);
-            if (!_claseEstudiante.ClaseEstudianteExiste(claseId))
+            if (!_claseEstudiante.ClaseEstudianteExiste(ceId))
             {
                 ModelState.AddModelError("", "ClaseEstudiante no existe");
                 return StatusCode(404, ModelState);
             }
-            if (!_claseEstudiante.UpdateClaseEstudiante(claseId, _mapper.Map<ClaseEstudiante>(claseEstudianteUpdate)))
+            var claseEstudianteMap = _mapper.Map<ClaseEstudiante>(claseEstudianteUpdate);
+            if (!_claseEstudiante.UpdateClaseEstudiante(ceId,claseEstudianteMap))
             {
                 ModelState.AddModelError("", $"Algo salio mal guardando el registro ");
                 return StatusCode(500, ModelState);

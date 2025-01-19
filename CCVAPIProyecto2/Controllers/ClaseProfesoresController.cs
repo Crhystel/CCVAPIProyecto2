@@ -53,11 +53,11 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateClaseProfesor([FromQuery] int claseId, [FromQuery] int profesorId, [FromBody] ClaseProfesorDto claseProfesorUpdate)
+        public IActionResult UpdateClaseProfesor([FromQuery]int cpId ,[FromBody] ClaseProfesorDto claseProfesorUpdate)
         {
             if (claseProfesorUpdate == null)
                 return BadRequest(ModelState);
-            if (!_claseProfesor.ClaseProfesorExiste(claseId))
+            if (!_claseProfesor.ClaseProfesorExiste(cpId))
             {
                 ModelState.AddModelError("", "ClaseProfesor no existe");
                 return StatusCode(404, ModelState);
@@ -65,9 +65,9 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var claseProfesor = _mapper.Map<ClaseProfesor>(claseProfesorUpdate);
-            if (!_claseProfesor.UpdateClaseProfesor(claseId, claseProfesor))
+            if (!_claseProfesor.UpdateClaseProfesor(cpId, claseProfesor))
             {
-                ModelState.AddModelError("", $"Algo salio mal actualizando el registro {claseId}");
+                ModelState.AddModelError("", $"Algo salio mal actualizando el registro");
                 return StatusCode(500, ModelState);
             }
             return Ok("gucci"); 
