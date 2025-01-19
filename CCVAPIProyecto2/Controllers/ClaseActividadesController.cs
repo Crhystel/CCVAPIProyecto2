@@ -70,11 +70,11 @@ namespace CCVAPIProyecto2.Controllers
             }
             return Ok("gucci");
         }
-        [HttpDelete]
+        [HttpDelete("{caId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteClaseActividad([FromQuery] int claseId, [FromQuery] int actividadId, [FromBody] ClaseActividadDto claseActividadUpdate)
+        public IActionResult DeleteClaseActividad(int caId,[FromQuery] int claseId, [FromQuery] int actividadId, [FromBody] ClaseActividadDto claseActividadUpdate)
         {
             if (!_claseActividad.ClaseActividadExiste(claseId, actividadId))
             {
