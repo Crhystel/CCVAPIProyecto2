@@ -6,8 +6,10 @@ namespace CCVAPIProyecto2.Interfaces
     {
         ICollection<ActividadEstudiante> GetActividadEstudiantes();
         ActividadEstudiante GetActividadEstudiante(int aeId);
-        ActividadEstudiante GetActividadEstudiantePorEstudiante(int estudianteId);
-        ActividadEstudiante GetActividadEstudiantePorActividad(int actividadId);
-        bool ActividadEstudianteExiste(int aeid);
+        bool ActividadEstudianteExiste(int aeId);
+        bool CreateActividadEstudiante(int actividadId, int estudianteId);
+        bool UpdateActividadEstudiante(int aeId,/*int actividadId,int estudianteId, */ActividadEstudiante actividadEstudiante);
+        bool DeleteActividadEstudiante(ActividadEstudiante actividadEstudiante);
+        bool Save();
     }
 }
