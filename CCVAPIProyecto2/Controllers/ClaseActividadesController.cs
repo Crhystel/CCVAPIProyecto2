@@ -74,7 +74,7 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteClaseActividad([FromQuery] int claseId, [FromQuery] int actividadId, [FromBody] ClaseActividadDto claseActividadUpdate)
+        public IActionResult DeleteClaseActividad([FromQuery] int claseId, [FromQuery] int actividadId)
         {
             if (!_claseActividad.ClaseActividadExiste(claseId, actividadId))
             {

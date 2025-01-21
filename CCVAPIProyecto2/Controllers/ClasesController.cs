@@ -88,7 +88,7 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteClase(int claseId, [FromBody] ClaseDto claseUpdate)
+        public IActionResult DeleteClase(int claseId)
         {
             if (!_clase.ClaseExiste(claseId))
             {

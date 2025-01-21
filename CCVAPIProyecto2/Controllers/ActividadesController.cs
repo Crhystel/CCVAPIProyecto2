@@ -90,7 +90,7 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteActividad(int actividadId, [FromBody] ActividadDto actividadUpdate)
+        public IActionResult DeleteActividad(int actividadId)
         {
             if (!_actividad.ActividadExiste(actividadId))
             {
