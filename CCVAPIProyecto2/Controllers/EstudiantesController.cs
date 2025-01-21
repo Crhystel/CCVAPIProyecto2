@@ -46,7 +46,7 @@ namespace CCVAPIProyecto2.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearEstudiante([FromQuery] GradoEnum gradoId, [FromBody] EstudianteDto estudianteCreate)
+        public IActionResult CrearEstudiante(/*[FromQuery] GradoEnum gradoId,*/ [FromBody] EstudianteDto estudianteCreate)
         {
             if (estudianteCreate == null)
                 return BadRequest(ModelState);
@@ -60,7 +60,7 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var estudianteMap = _mapper.Map<Estudiante>(estudianteCreate);
-            if (!_estudiante.CreateEstudiante(gradoId, estudianteMap))
+            if (!_estudiante.CreateEstudiante(/*gradoId,*/ estudianteMap))
             {
                 ModelState.AddModelError("", "Algo salio mal");
                 return StatusCode(500, ModelState);
@@ -71,7 +71,7 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateEstudiante(int estudianteId, [FromQuery] GradoEnum gradoId, [FromBody] EstudianteDto estudianteUpdate)
+        public IActionResult UpdateEstudiante(int estudianteId, /*[FromQuery] GradoEnum gradoId,*/ [FromBody] EstudianteDto estudianteUpdate)
         {
             if (estudianteUpdate == null)
             {
@@ -97,7 +97,7 @@ namespace CCVAPIProyecto2.Controllers
 
             var estudianteMap = _mapper.Map<Estudiante>(estudianteUpdate);
 
-            if (!_estudiante.UpdateEstudiante(gradoId, estudianteMap))
+            if (!_estudiante.UpdateEstudiante(/*gradoId,*/ estudianteMap))
             {
                 ModelState.AddModelError("", "Algo salió mal");
                 return StatusCode(500, ModelState);

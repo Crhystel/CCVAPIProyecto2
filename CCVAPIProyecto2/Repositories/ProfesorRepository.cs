@@ -12,9 +12,9 @@ namespace CCVAPIProyecto2.Repositories
             _context = context;
         }
 
-        public bool CreateProfesor(MateriaEnum materiaId, Profesor profesor)
+        public bool CreateProfesor(/*MateriaEnum materiaId, */Profesor profesor)
         {
-            profesor.Materia = materiaId;
+            //profesor.Materia = materiaId;
             _context.Add(profesor);
             return Save();
         }
@@ -48,7 +48,7 @@ namespace CCVAPIProyecto2.Repositories
             return saved > 0 ? true : false;
         }
 
-        public bool UpdateProfesor(MateriaEnum materiaId, Profesor profesor)
+        public bool UpdateProfesor(/*MateriaEnum materiaId,*/ Profesor profesor)
         {
             _context.Update(profesor);
             return Save();

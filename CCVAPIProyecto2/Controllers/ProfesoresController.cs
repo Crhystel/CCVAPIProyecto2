@@ -42,7 +42,7 @@ namespace CCVAPIProyecto2.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearProfesor([FromQuery] MateriaEnum materiaId, [FromBody] ProfesorDto profesorCreate)
+        public IActionResult CrearProfesor(/*[FromQuery] MateriaEnum materiaId,*/ [FromBody] ProfesorDto profesorCreate)
         {
             if (profesorCreate == null)
                 return BadRequest(ModelState);
@@ -56,7 +56,7 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var profesorMap = _mapper.Map<Profesor>(profesorCreate);
-            if (!_profesor.CreateProfesor(materiaId, profesorMap))
+            if (!_profesor.CreateProfesor(/*materiaId, */profesorMap))
             {
                 ModelState.AddModelError("", "Algo salio mal");
                 return StatusCode(500, ModelState);
@@ -67,7 +67,7 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateProfesor(int profesorId, [FromQuery] MateriaEnum materiaId, [FromBody] ProfesorDto profesorUpdate)
+        public IActionResult UpdateProfesor(int profesorId, /*[FromQuery] MateriaEnum materiaId,*/ [FromBody] ProfesorDto profesorUpdate)
         {
             if (profesorUpdate == null)
                 return BadRequest(ModelState);
@@ -78,7 +78,7 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
             var profesorMap = _mapper.Map<Profesor>(profesorUpdate);
-            if (!_profesor.UpdateProfesor(materiaId, profesorMap))
+            if (!_profesor.UpdateProfesor(/*materiaId,*/ profesorMap))
             {
                 ModelState.AddModelError("", "Algo salió mal");
                 return StatusCode(500, ModelState);

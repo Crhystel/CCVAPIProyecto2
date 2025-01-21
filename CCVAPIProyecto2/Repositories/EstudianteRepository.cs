@@ -12,9 +12,9 @@ namespace CCVAPIProyecto2.Repositories
             _context = context;
         }
 
-        public bool CreateEstudiante(GradoEnum gradoId, Estudiante estudiante)
+        public bool CreateEstudiante(/*GradoEnum gradoId,*/ Estudiante estudiante)
         {
-            estudiante.Grado = gradoId;
+            //estudiante.Grado = gradoId;
             _context.Add(estudiante);
             return Save();
 
@@ -37,7 +37,7 @@ namespace CCVAPIProyecto2.Repositories
             return saved > 0 ? true : false;
         }
 
-        public bool UpdateEstudiante(GradoEnum gradoId, Estudiante estudiante)
+        public bool UpdateEstudiante(/*GradoEnum gradoId,*/ Estudiante estudiante)
         {
             _context.Update(estudiante);
             return Save();
