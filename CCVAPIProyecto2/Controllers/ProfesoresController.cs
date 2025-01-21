@@ -90,7 +90,7 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteProfesor(int profesorId, [FromBody] ProfesorDto profesorUpdate)
+        public IActionResult DeleteProfesor(int profesorId/*, [FromBody] ProfesorDto profesorUpdate*/)
         {
             if (!_profesor.ProfesorExiste(profesorId))
             {

@@ -19,14 +19,6 @@ namespace CCVAPIProyecto2.Repositories
             return Save();
         }
 
-        public bool DeleteProfesor(Profesor profesor)
-        {
-            _context.Remove(profesor);
-            return Save();
-        }
-
-
-
         public Profesor GetProfesor(int id)
         {
             return _context.Profesores.Where(c => c.Id == id).FirstOrDefault();
@@ -51,6 +43,11 @@ namespace CCVAPIProyecto2.Repositories
         public bool UpdateProfesor(/*MateriaEnum materiaId,*/ Profesor profesor)
         {
             _context.Update(profesor);
+            return Save();
+        }
+        public bool DeleteProfesor(Profesor profesor)
+        {
+            _context.Remove(profesor);
             return Save();
         }
     }
