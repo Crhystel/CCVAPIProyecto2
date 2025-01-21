@@ -6,7 +6,6 @@ namespace CCVAPIProyecto2.Dto
     public class ProfesorDto
     {
         public int Id { get; set; }
-        [JsonIgnore]
         public MateriaEnum Materia { get; set; }
         public string Nombre { get; set; }
         public int Edad { get; set; }

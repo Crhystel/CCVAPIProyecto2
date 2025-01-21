@@ -86,7 +86,7 @@ namespace CCVAPIProyecto2.Controllers
             }
             return NoContent();
         }
-        [HttpDelete("{profesorId}")]
+        [HttpDelete]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

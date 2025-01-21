@@ -1,6 +1,7 @@
 ﻿using CCVAPIProyecto2.Data;
 using CCVAPIProyecto2.Interfaces;
 using CCVAPIProyecto2.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CCVAPIProyecto2.Repositories
 {
@@ -11,9 +12,14 @@ namespace CCVAPIProyecto2.Repositories
         {
             _context = context;
         }
-        public Task<Usuario> Login(string nombreUsuario, string contrasenia)
+        public async Task<Usuario> Login(string nombreUsuario, string contrasenia)
         {
-            throw new NotImplementedException();
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.NombreUsuario == nombreUsuario);
+            if(usuario==null || usuario.Contrasenia != contrasenia)
+            {
+                return null;
+            }
+            return usuario;
         }
     }
 }

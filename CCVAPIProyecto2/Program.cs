@@ -20,6 +20,7 @@ builder.Services.AddScoped<IActividadEstudiante, ActividadEstudianteRepository>(
 builder.Services.AddScoped<IClaseActividad, ClaseActividadRepository>();
 builder.Services.AddScoped<IClaseEstudiante, ClaseEstudianteRepository>();
 builder.Services.AddScoped<IClaseProfesor, ClaseProfesorRepository>();
+builder.Services.AddScoped<ILogin, LoginRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.WebHost.ConfigureKestrel(options =>
@@ -75,7 +76,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.MapIdentityApi<IdentityUser>();
+//app.MapIdentityApi<IdentityUser>();
 app.UseCors("AllowAll");
 
 app.MapControllers();
