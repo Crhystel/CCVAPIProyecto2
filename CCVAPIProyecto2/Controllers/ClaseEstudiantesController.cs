@@ -29,7 +29,7 @@ namespace CCVAPIProyecto2.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearClaseEstudiante([FromQuery] int claseId, [FromQuery] int estudianteId, [FromBody] ClaseEstudianteDto claseEstudianteCreate)
+        public IActionResult CrearClaseEstudiante( int claseId, int estudianteId, [FromBody] ClaseEstudianteDto claseEstudianteCreate)
         {
             if (claseEstudianteCreate == null)
                 return BadRequest(ModelState);
