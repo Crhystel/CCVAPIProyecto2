@@ -16,7 +16,7 @@ namespace CCVAPIProyecto2.Repositories
             return _context.Clases.Any(c => c.Id == id);
         }
 
-        public bool CreateClase(int claseId, /*int estudiantesId, int profesoresId, */Clase clase)
+        public bool CreateClase( /*int estudiantesId, int profesoresId, */Clase clase)
         {
             _context.Add(clase);
             return Save();
@@ -63,7 +63,7 @@ namespace CCVAPIProyecto2.Repositories
             return saved > 0 ? true : false;
         }
 
-        public bool UpdateClase(int claseId, /*int estudiantesId, int profesoresId, */Clase clase)
+        public bool UpdateClase( /*int estudiantesId, int profesoresId, */Clase clase)
         {
             _context.Update(clase);
             return Save();

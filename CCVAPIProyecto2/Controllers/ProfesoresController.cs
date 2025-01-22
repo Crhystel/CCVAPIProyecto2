@@ -70,11 +70,21 @@ namespace CCVAPIProyecto2.Controllers
         public IActionResult UpdateProfesor(int profesorId, /*[FromQuery] MateriaEnum materiaId,*/ [FromBody] ProfesorDto profesorUpdate)
         {
             if (profesorUpdate == null)
+            {
+                ModelState.AddModelError("", "No se encontró el profesor");
                 return BadRequest(ModelState);
+            }
+                
             if (profesorId != profesorUpdate.Id)
+            {
+                ModelState.AddModelError("", "No se encontró el profesorid");
                 return BadRequest(ModelState);
+            }
             if (!_profesor.ProfesorExiste(profesorId))
+            {
                 return NotFound();
+            }
+                
             if (!ModelState.IsValid)
                 return BadRequest();
             var profesorMap = _mapper.Map<Profesor>(profesorUpdate);

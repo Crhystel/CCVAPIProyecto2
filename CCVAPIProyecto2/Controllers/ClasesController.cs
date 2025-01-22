@@ -41,12 +41,12 @@ namespace CCVAPIProyecto2.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearClase( [FromQuery] int claseId, /*[FromQuery] int estudiantesId, [FromQuery] int profesoresId,*/ [FromBody] ClaseDto claseCreate)
+        public IActionResult CrearClase( /*[FromQuery] int claseId,*/ /*[FromQuery] int estudiantesId, [FromQuery] int profesoresId,*/ [FromBody] ClaseDto claseCreate)
         {
             if (claseCreate == null)
                 return BadRequest(ModelState);
             var clases = _clase.GetClases()
-                .Where(c => c.Id == claseId).FirstOrDefault();
+                .Where(c => c.Id == claseCreate.Id).FirstOrDefault();
             if (clases != null)
             {
                 ModelState.AddModelError("", "Clase ya existe");
@@ -55,7 +55,7 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var claseMap = _mapper.Map<Clase>(claseCreate);
-            if (!_clase.CreateClase(claseId, /*estudiantesId, profesoresId,*/ claseMap))
+            if (!_clase.CreateClase( /*estudiantesId, profesoresId,*/ claseMap))
             {
                 ModelState.AddModelError("", "Algo salio mal");
                 return StatusCode(500, ModelState);
@@ -66,25 +66,23 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateClase( int claseId , /*[FromQuery] int estudianteId, [FromQuery] int profesorId,*/ [FromBody] ClaseDto claseUpdate)
+        public IActionResult UpdateClase(  /*[FromQuery] int estudianteId, [FromQuery] int profesorId,*/ [FromBody] ClaseDto claseUpdate)
         {
             if (claseUpdate == null)
                 return BadRequest(ModelState);
-            if (claseId != claseUpdate.Id)
-                return BadRequest(ModelState);
-            if (!_clase.ClaseExiste(claseUpdate.Id)) // Cambiado de nombre a claseUpdate.Id
+            if (!_clase.ClaseExiste(claseUpdate.Id)) 
                 return NotFound();
             if (!ModelState.IsValid)
                 return BadRequest();
             var claseMap = _mapper.Map<Clase>(claseUpdate);
-            if (!_clase.UpdateClase(claseId, /*estudianteId, profesorId,*/ claseMap)) // Cambiado de nombre a claseUpdate.Id
+            if (!_clase.UpdateClase( /*estudianteId, profesorId,*/ claseMap)) 
             {
                 ModelState.AddModelError("", "Algo salio mal");
                 return StatusCode(500, ModelState);
             }
             return NoContent();
         }
-        [HttpDelete("{claseId}")]
+        [HttpDelete]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
