@@ -12,5 +12,7 @@ namespace CCVAPIProyecto2.Dto
         public string Cedula { get; set; }
         public string Contrasenia { get; set; }
         public string NombreUsuario { get; set; }
+        [JsonIgnore]
+        public RolEnum RolEnum { get; set; } = RolEnum.Profesor;
     }
 }
