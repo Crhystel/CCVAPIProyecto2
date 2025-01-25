@@ -1,4 +1,5 @@
 ﻿using CCVAPIProyecto2.Data;
+using CCVAPIProyecto2.Dto;
 using CCVAPIProyecto2.Interfaces;
 using CCVAPIProyecto2.Models;
 
@@ -16,16 +17,16 @@ namespace CCVAPIProyecto2.Repositories
             return _context.ClaseEstudiantes.Any(c => c.Id == ceId);
         }
 
-        public bool CreateClaseEstudiante(int claseId, int estudianteId)
+        public bool CreateClaseEstudiante(ClaseEstudiante claseEstudiante)
         {
-            var clase = _context.Clases.FirstOrDefault(c => c.Id == claseId);
-            var estudiante = _context.Estudiantes.FirstOrDefault(c => c.Id == estudianteId);
-            var claseEstudiante = new ClaseEstudiante
+            var clase = _context.Clases.FirstOrDefault(c => c.Id == claseEstudiante.ClaseId);
+            var estudiante = _context.Estudiantes.FirstOrDefault(c => c.Id == claseEstudiante.EstudianteId);
+            var claseEstudianteNuevo = new ClaseEstudiante
             {
-                ClaseId = claseId,
-                EstudianteId = estudianteId,
+                ClaseId = claseEstudiante.ClaseId,
+                EstudianteId = claseEstudiante.EstudianteId,
             };
-            _context.Add(claseEstudiante);
+            _context.Add(claseEstudianteNuevo);
             return Save();
         }
 

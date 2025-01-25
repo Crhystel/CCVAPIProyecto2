@@ -29,12 +29,12 @@ namespace CCVAPIProyecto2.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearClaseEstudiante( int claseId, int estudianteId, [FromBody] ClaseEstudianteDto claseEstudianteCreate)
+        public IActionResult CrearClaseEstudiante(  [FromBody] ClaseEstudianteDto claseEstudianteCreate)
         {
             if (claseEstudianteCreate == null)
                 return BadRequest(ModelState);
             var claseEstudiantes = _claseEstudiante.GetClaseEstudiantes()
-                .Where(c => c.ClaseId == claseId && c.EstudianteId == estudianteId).FirstOrDefault();
+                .Where(c => c.ClaseId == claseEstudianteCreate.ClaseId && c.EstudianteId == claseEstudianteCreate.EstudianteId).FirstOrDefault();
             if (claseEstudiantes != null)
             {
                 ModelState.AddModelError("", "ClaseEstudiante ya existe");
@@ -42,7 +42,8 @@ namespace CCVAPIProyecto2.Controllers
             }
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            if (!_claseEstudiante.CreateClaseEstudiante(claseId, estudianteId))
+            var claseEstudianteMap=_mapper.Map<ClaseEstudiante>(claseEstudianteCreate);
+            if (!_claseEstudiante.CreateClaseEstudiante(claseEstudianteMap))
             {
                 ModelState.AddModelError("", $"Algo salio mal guardando el registro ");
                 return StatusCode(500, ModelState);
