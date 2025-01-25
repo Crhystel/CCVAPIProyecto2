@@ -1,6 +1,7 @@
 ﻿using CCVAPIProyecto2.Data;
 using CCVAPIProyecto2.Interfaces;
 using CCVAPIProyecto2.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CCVAPIProyecto2.Repositories
 {
@@ -12,19 +13,19 @@ namespace CCVAPIProyecto2.Repositories
             _context = context;
         }
 
-        public bool ClaseActividadExiste(int claseId, int actividadId)
+        public bool ClaseActividadExiste(int caId)
         {
-            return _context.ClaseActividades.Any(c => c.ClaseId == claseId && c.ActividadId == actividadId);
+            return _context.ClaseActividades.Any(c => c.Id==caId);
         }
 
-        public bool CreateClaseActividad(int claseId, int actividadId/*, ClaseActividad claseActividad*/)
+        public bool CreateClaseActividad(ClaseActividad claseActividad)
         {
-            var clase = _context.Clases.FirstOrDefault(c => c.Id == claseId);
-            var actividad= _context.Actividades.FirstOrDefault(c => c.Id==actividadId);
+            var clase = _context.Clases.FirstOrDefault(c => c.Id == claseActividad.ClaseId);
+            var actividad= _context.Actividades.FirstOrDefault(c => c.Id==claseActividad.ActividadId);
             var claseActividads = new ClaseActividad
             {
-                ClaseId = claseId,
-                ActividadId = actividadId,
+                ClaseId = claseActividad.ClaseId,
+                ActividadId = claseActividad.ActividadId,
             };
             _context.Add(claseActividads);
             return Save();
@@ -36,14 +37,14 @@ namespace CCVAPIProyecto2.Repositories
             return Save();
         }
 
-        public ClaseActividad GetClaseActividad(int claseId, int actividadId)
+        public ClaseActividad GetClaseActividad(int caId)
         {
-            return _context.ClaseActividades.Where(c=>c.ClaseId == claseId && c.ActividadId==actividadId).FirstOrDefault();
+            return _context.ClaseActividades.Where(c=>c.Id==caId).FirstOrDefault();
         }
 
         public ICollection<ClaseActividad> GetClaseActividades()
         {
-            return _context.ClaseActividades.OrderBy(c=>c.Id).ToList();
+            return _context.ClaseActividades.Include(c=>c.Clase).Include(c=>c.Actividad).ToList();
         }
 
         public bool Save()
@@ -52,7 +53,7 @@ namespace CCVAPIProyecto2.Repositories
             return saved > 0 ? true : false;
         }
 
-        public bool UpdateClaseActividad(int claseId, int actividadId, ClaseActividad claseActividad)
+        public bool UpdateClaseActividad(int caId, ClaseActividad claseActividad)
         {
             _context.Update(claseActividad);
             return Save();

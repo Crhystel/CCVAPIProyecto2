@@ -21,7 +21,16 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<ClaseActividad>))]
         public IActionResult GetClaseActividades()
         {
-            var claseActividades = _mapper.Map<List<ClaseActividadDto>>(_claseActividad.GetClaseActividades());
+            var claseActividades = _mapper.Map<List<ClaseActividadDto>>(_claseActividad.GetClaseActividades()
+                .Select(c => new ClaseActividadDto
+                {
+                    Id = c.Id,
+                    ClaseId = c.ClaseId,
+                    ClaseNombre = c.Clase.Nombre,
+                    ActividadId = c.ActividadId,
+                    ActividadNombre = c.Actividad.Titulo
+
+                }).ToList());
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(claseActividades);
@@ -29,18 +38,21 @@ namespace CCVAPIProyecto2.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearClaseActividad([FromQuery] int claseId, [FromQuery] int actividadId, [FromBody] ClaseActividadDto claseActividadCreate)
+        public IActionResult CrearClaseActividad([FromBody] ClaseActividadDto claseActividadCreate)
         {
-            //if (claseActividadCreate == null)
-            //    return BadRequest(ModelState);
-            if (_claseActividad.ClaseActividadExiste(claseId, actividadId))
+            if (claseActividadCreate == null)
+                return BadRequest(ModelState);
+            var claseActividades=_claseActividad.GetClaseActividades()
+                .Where(c => c.ClaseId == claseActividadCreate.ClaseId && c.ActividadId == claseActividadCreate.ActividadId).FirstOrDefault();
+            if(claseActividades != null)
             {
                 ModelState.AddModelError("", "ClaseActividad ya existe");
                 return StatusCode(422, ModelState);
             }
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            if (!_claseActividad.CreateClaseActividad(claseId, actividadId/*, claseActividadCreate*/))
+            var claseActividadMap = _mapper.Map<ClaseActividad>(claseActividadCreate);
+            if (!_claseActividad.CreateClaseActividad(claseActividadMap))
             {
                 ModelState.AddModelError("", $"Algo salio mal guardando el registro ");
                 return StatusCode(500, ModelState);
@@ -51,11 +63,11 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateClaseActividad([FromQuery] int claseId, [FromQuery] int actividadId, [FromBody] ClaseActividadDto claseActividadUpdate)
+        public IActionResult UpdateClaseActividad(int caId,[FromBody] ClaseActividadDto claseActividadUpdate)
         {
             if (claseActividadUpdate == null)
                 return BadRequest(ModelState);
-            if (!_claseActividad.ClaseActividadExiste(claseId, actividadId))
+            if (!_claseActividad.ClaseActividadExiste(caId))
             {
                 ModelState.AddModelError("", "ClaseActividad no existe");
                 return StatusCode(422, ModelState);
@@ -63,30 +75,30 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var claseActividadMap = _mapper.Map<ClaseActividad>(claseActividadUpdate);
-            if (!_claseActividad.UpdateClaseActividad(claseId, actividadId, claseActividadMap))
+            if (!_claseActividad.UpdateClaseActividad(caId,claseActividadMap))
             { 
                 ModelState.AddModelError("", $"Algo salio mal actualizando el registro {claseActividadUpdate}");
                 return StatusCode(500, ModelState);
             }
             return Ok("gucci");
         }
-        [HttpDelete("{caId}")]
+        [HttpDelete]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteClaseActividad([FromQuery] int claseId, [FromQuery] int actividadId)
+        public IActionResult DeleteClaseActividad([FromQuery] int caId)
         {
-            if (!_claseActividad.ClaseActividadExiste(claseId, actividadId))
+            if (!_claseActividad.ClaseActividadExiste(caId))
             {
                 ModelState.AddModelError("", "ClaseActividad no existe");
                 return StatusCode(404, ModelState);
             }
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var claseActividadDelete=_claseActividad.GetClaseActividad(claseId, actividadId);
+            var claseActividadDelete=_claseActividad.GetClaseActividad(caId);
             if (!_claseActividad.DeleteClaseActividad(claseActividadDelete))
             {
-                ModelState.AddModelError("", $"Algo salio mal eliminando el registro {claseId} {actividadId}");
+                ModelState.AddModelError("", $"Algo salio mal");
                 return StatusCode(500, ModelState);
             }
             return Ok("gucci");

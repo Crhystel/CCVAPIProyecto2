@@ -71,6 +71,8 @@ namespace CCVAPIProyecto2.Controllers
                 ModelState.AddModelError("", "ClaseEstudiante no existe");
                 return StatusCode(404, ModelState);
             }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             var claseEstudianteMap = _mapper.Map<ClaseEstudiante>(claseEstudianteUpdate);
             if (!_claseEstudiante.UpdateClaseEstudiante(ceId,claseEstudianteMap))
             {
