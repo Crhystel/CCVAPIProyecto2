@@ -7,7 +7,7 @@ namespace CCVAPIProyecto2.Interfaces
         ICollection<ClaseProfesor> GetClaseProfesores();
         ClaseProfesor GetClaseProfesor(int cpId);
         bool ClaseProfesorExiste(int cpId);
-        bool CreateClaseProfesor(int claseId, int profesorId);
+        bool CreateClaseProfesor(ClaseProfesor claseProfesor);
         bool UpdateClaseProfesor(int cpId, ClaseProfesor claseProfesor);
         bool DeleteClaseProfesor(ClaseProfesor claseProfesor);
         bool Save();

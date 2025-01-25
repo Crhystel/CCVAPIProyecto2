@@ -21,7 +21,15 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<ClaseProfesor>))]
         public IActionResult GetClaseProfesores()
         {
-            var claseProfesores = _mapper.Map<List<ClaseProfesorDto>>(_claseProfesor.GetClaseProfesores());
+            var claseProfesores = _mapper.Map<List<ClaseProfesorDto>>(_claseProfesor.GetClaseProfesores()
+                .Select(c => new ClaseProfesorDto
+                {
+                    Id = c.Id,
+                    ClasePId = c.ClasePId,
+                    ClaseNombre = c.ClaseP.Nombre,
+                    ProfesorId = c.ProfesorId,
+                    ProfesorNombre = c.Profesor.Nombre
+                }).ToList());
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(claseProfesores);
@@ -29,12 +37,12 @@ namespace CCVAPIProyecto2.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearClaseProfesor([FromQuery] int claseId, [FromQuery] int profesorId, [FromBody] ClaseProfesorDto claseProfesorCreate)
+        public IActionResult CrearClaseProfesor([FromBody] ClaseProfesorDto claseProfesorCreate)
         {
             if (claseProfesorCreate == null)
                 return BadRequest(ModelState);
             var claseProfesores = _claseProfesor.GetClaseProfesores()
-                .Where(c => c.ClasePId == claseId && c.ProfesorId == profesorId).FirstOrDefault();
+                .Where(c => c.ClasePId == claseProfesorCreate.ClasePId && c.ProfesorId == claseProfesorCreate.ProfesorId).FirstOrDefault();
             if (claseProfesores != null)
             {
                 ModelState.AddModelError("", "ClaseProfesor ya existe");
@@ -42,7 +50,8 @@ namespace CCVAPIProyecto2.Controllers
             }
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            if (!_claseProfesor.CreateClaseProfesor(claseId, profesorId))
+            var claseProfesorMap = _mapper.Map<ClaseProfesor>(claseProfesorCreate);
+            if (!_claseProfesor.CreateClaseProfesor(claseProfesorMap))
             {
                 ModelState.AddModelError("", $"Algo salio mal guardando el registro ");
                 return StatusCode(500, ModelState);
@@ -53,7 +62,7 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateClaseProfesor([FromQuery]int cpId ,[FromBody] ClaseProfesorDto claseProfesorUpdate)
+        public IActionResult UpdateClaseProfesor(int cpId ,[FromBody] ClaseProfesorDto claseProfesorUpdate)
         {
             if (claseProfesorUpdate == null)
                 return BadRequest(ModelState);

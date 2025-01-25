@@ -12,3 +12,5 @@ namespace CCVAPIProyecto2.Models
         public Profesor Profesor { get; set; }
     }
 }
+
+

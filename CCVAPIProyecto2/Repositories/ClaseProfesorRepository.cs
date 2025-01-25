@@ -1,6 +1,7 @@
 ﻿using CCVAPIProyecto2.Data;
 using CCVAPIProyecto2.Interfaces;
 using CCVAPIProyecto2.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CCVAPIProyecto2.Repositories
 {
@@ -16,16 +17,16 @@ namespace CCVAPIProyecto2.Repositories
             return _context.ClaseProfesores.Any(c => c.Id == cpId);
         }
 
-        public bool CreateClaseProfesor(int claseId, int profesorId)
+        public bool CreateClaseProfesor(ClaseProfesor claseProfesor)
         {
-            var clase = _context.Clases.FirstOrDefault(c => c.Id == claseId);
-            var profesor = _context.Profesores.FirstOrDefault(c => c.Id == profesorId);
-            var claseProfesor = new ClaseProfesor
+            var clase = _context.Clases.FirstOrDefault(c => c.Id == claseProfesor.ClasePId);
+            var profesor = _context.Profesores.FirstOrDefault(c => c.Id == claseProfesor.ProfesorId);
+            var claseProfesorNuevo = new ClaseProfesor
             {
-                ClasePId = claseId,
-                ProfesorId = profesorId,
+                ClasePId = claseProfesor.ClasePId,
+                ProfesorId = claseProfesor.ProfesorId,
             };
-            _context.Add(claseProfesor);
+            _context.Add(claseProfesorNuevo);
             return Save();
         }
 
@@ -42,7 +43,7 @@ namespace CCVAPIProyecto2.Repositories
 
         public ICollection<ClaseProfesor> GetClaseProfesores()
         {
-            return _context.ClaseProfesores.OrderBy(c => c.Id).ToList();
+            return _context.ClaseProfesores.Include(c => c.ClaseP).Include(c => c.Profesor).ToList();
         }
 
         public bool Save()
