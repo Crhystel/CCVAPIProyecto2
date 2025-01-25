@@ -55,7 +55,7 @@ namespace CCVAPIProyecto2.Repositories
         public bool UpdateClaseProfesor(int cpId, ClaseProfesor claseProfesor)
         {
             _context.Update(claseProfesor);
-            return true;
+            return Save();
         }
     }
 }
