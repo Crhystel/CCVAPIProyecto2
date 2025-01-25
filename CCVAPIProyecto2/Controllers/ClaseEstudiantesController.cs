@@ -21,7 +21,15 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<ClaseEstudiante>))]
         public IActionResult GetClaseEstudiantes()
         {
-            var claseEstudiantes = _mapper.Map<List<ClaseEstudianteDto>>(_claseEstudiante.GetClaseEstudiantes());
+            var claseEstudiantes = _mapper.Map<List<ClaseEstudianteDto>>(_claseEstudiante.GetClaseEstudiantes()
+                .Select(c => new ClaseEstudianteDto
+                {
+                    Id = c.Id,
+                    ClaseId = c.ClaseId,
+                    ClaseNombre = c.Clase.Nombre,
+                    EstudianteId = c.EstudianteId,
+                    EstudianteNombre = c.Estudiante.Nombre
+                }).ToList());
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             return Ok(claseEstudiantes);
@@ -54,7 +62,7 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateClaseEstudiante([FromQuery] int ceId,/*[FromQuery] int claseId, [FromQuery] int estudianteId,*/ [FromBody] ClaseEstudianteDto claseEstudianteUpdate)
+        public IActionResult UpdateClaseEstudiante(int ceId,/*[FromQuery] int claseId, [FromQuery] int estudianteId,*/ [FromBody] ClaseEstudianteDto claseEstudianteUpdate)
         {
             if (claseEstudianteUpdate == null)
                 return BadRequest(ModelState);

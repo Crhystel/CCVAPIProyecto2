@@ -2,6 +2,7 @@
 using CCVAPIProyecto2.Dto;
 using CCVAPIProyecto2.Interfaces;
 using CCVAPIProyecto2.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CCVAPIProyecto2.Repositories
 {
@@ -43,7 +44,7 @@ namespace CCVAPIProyecto2.Repositories
 
         public ICollection<ClaseEstudiante> GetClaseEstudiantes()
         {
-            return _context.ClaseEstudiantes.OrderBy(c => c.Id).ToList();
+            return _context.ClaseEstudiantes.Include(c => c.Clase).Include(c => c.Estudiante).ToList();
         }
 
         public bool Save()
