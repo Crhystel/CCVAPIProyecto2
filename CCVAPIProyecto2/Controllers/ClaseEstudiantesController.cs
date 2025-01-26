@@ -2,6 +2,7 @@
 using CCVAPIProyecto2.Dto;
 using CCVAPIProyecto2.Interfaces;
 using CCVAPIProyecto2.Models;
+using CCVAPIProyecto2.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CCVAPIProyecto2.Controllers
@@ -72,6 +73,29 @@ namespace CCVAPIProyecto2.Controllers
                 ModelState.AddModelError("", "Todos los campos deben estar llenos");
                 return BadRequest(ModelState);
             }
+            var claseEstudianteOriginal = _claseEstudiante.GetClaseEstudiante(claseEstudianteUpdate.Id);
+            if (claseEstudianteOriginal == null)
+            {
+                return NotFound();
+            }
+            if (claseEstudianteOriginal == null)
+            {
+                return NotFound();
+            }
+            var duplicado = _claseEstudiante.GetClaseEstudiantes()
+                .Any(c => c.ClaseId == claseEstudianteUpdate.ClaseId && c.EstudianteId==claseEstudianteUpdate.EstudianteId && c.Id != claseEstudianteUpdate.Id);
+            if (duplicado)
+            {
+                ModelState.AddModelError("", "El estudiante ya esta unido a esa clase");
+                return StatusCode(422, ModelState);
+            }
+            _mapper.Map(claseEstudianteUpdate, claseEstudianteOriginal);
+            if (!_claseEstudiante.UpdateClaseEstudiante(claseEstudianteOriginal))
+            {
+                ModelState.AddModelError("", "Algo salió mal");
+                return StatusCode(500, ModelState);
+            }
+
             if (!_claseEstudiante.ClaseEstudianteExiste(claseEstudianteUpdate.Id))
             {
                 ModelState.AddModelError("", "ClaseEstudiante no existe");
@@ -79,12 +103,7 @@ namespace CCVAPIProyecto2.Controllers
             }
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var claseEstudianteMap = _mapper.Map<ClaseEstudiante>(claseEstudianteUpdate);
-            if (!_claseEstudiante.UpdateClaseEstudiante(claseEstudianteMap))
-            {
-                ModelState.AddModelError("", $"Algo salio mal guardando el registro ");
-                return StatusCode(500, ModelState);
-            }
+            
             return Ok("gucci");
         }
         [HttpDelete]

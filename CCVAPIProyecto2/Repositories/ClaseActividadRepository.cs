@@ -55,7 +55,13 @@ namespace CCVAPIProyecto2.Repositories
 
         public bool UpdateClaseActividad(ClaseActividad claseActividad)
         {
-            _context.Update(claseActividad);
+            var trackedEntity = _context.ClaseEstudiantes.Local.FirstOrDefault(c => c.Id == claseActividad.Id);
+            if (trackedEntity != null)
+            {
+                _context.Entry(trackedEntity).State = EntityState.Detached;
+            }
+            _context.Attach(claseActividad);
+            _context.Entry(claseActividad).State = EntityState.Modified;
             return Save();
         }
     }

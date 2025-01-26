@@ -46,7 +46,7 @@ namespace CCVAPIProyecto2.Controllers
                 .Where(c => c.ClaseId == claseActividadCreate.ClaseId && c.ActividadId == claseActividadCreate.ActividadId).FirstOrDefault();
             if(claseActividades != null)
             {
-                ModelState.AddModelError("", "ClaseActividad ya existe");
+                ModelState.AddModelError("", "La actividad ya está asignada a esta clase");
                 return StatusCode(422, ModelState);
             }
             if (!ModelState.IsValid)
@@ -66,7 +66,32 @@ namespace CCVAPIProyecto2.Controllers
         public IActionResult UpdateClaseActividad([FromBody] ClaseActividadDto claseActividadUpdate)
         {
             if (claseActividadUpdate == null)
+            {
+                ModelState.AddModelError("", "Todos los campos deben estar llenos");
                 return BadRequest(ModelState);
+            }
+            var claseActividadOriginal = _claseActividad.GetClaseActividad(claseActividadUpdate.Id);
+            if (claseActividadOriginal == null)
+            {
+                return NotFound();
+            }
+            if (claseActividadOriginal == null)
+            {
+                return NotFound();
+            }
+            var duplicado = _claseActividad.GetClaseActividades()
+                .Any(c => c.ClaseId == claseActividadUpdate.ClaseId && c.ActividadId == claseActividadUpdate.ActividadId && c.Id != claseActividadUpdate.Id);
+            if (duplicado)
+            {
+                ModelState.AddModelError("", "La actividad ya está asignada a esta clase");
+                return StatusCode(422, ModelState);
+            }
+            _mapper.Map(claseActividadUpdate, claseActividadOriginal);
+            if (!_claseActividad.UpdateClaseActividad(claseActividadOriginal))
+            {
+                ModelState.AddModelError("", "Algo salió mal");
+                return StatusCode(500, ModelState);
+            }
             if (!_claseActividad.ClaseActividadExiste(claseActividadUpdate.Id))
             {
                 ModelState.AddModelError("", "ClaseActividad no existe");
@@ -74,12 +99,6 @@ namespace CCVAPIProyecto2.Controllers
             }
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var claseActividadMap = _mapper.Map<ClaseActividad>(claseActividadUpdate);
-            if (!_claseActividad.UpdateClaseActividad(claseActividadMap))
-            { 
-                ModelState.AddModelError("", $"Algo salio mal actualizando el registro {claseActividadUpdate}");
-                return StatusCode(500, ModelState);
-            }
             return Ok("gucci");
         }
         [HttpDelete]
