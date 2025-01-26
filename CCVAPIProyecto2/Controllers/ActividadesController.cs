@@ -43,7 +43,7 @@ namespace CCVAPIProyecto2.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearActividad(/*[FromQuery] int claseId, */[FromQuery] int actividadId, [FromBody] ActividadDto actividadCreate)
+        public IActionResult CrearActividad([FromQuery] int claseId, [FromQuery] int actividadId, [FromBody] ActividadDto actividadCreate)
         {
             if (actividadCreate == null)
                return BadRequest(ModelState);
@@ -54,10 +54,11 @@ namespace CCVAPIProyecto2.Controllers
                 ModelState.AddModelError("", "Actividad ya existe");
                 return StatusCode(422, ModelState);
             }
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var actividadMap = _mapper.Map<Actividad>(actividadCreate);
-            if (!_actividad.CreateActividad(/*claseId,*/ actividadId, actividadMap))
+            if (!_actividad.CreateActividad(claseId, actividadId, actividadMap))
             {
                 ModelState.AddModelError("", "Algo malio sal");
                 return StatusCode(500, ModelState);
@@ -65,6 +66,8 @@ namespace CCVAPIProyecto2.Controllers
             return Ok("gucci");
 
         }
+
+
         [HttpPut/*("{actividadId}")*/]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -108,6 +111,18 @@ namespace CCVAPIProyecto2.Controllers
             return NoContent();
         }
 
+        [HttpGet("PorClase/{claseId}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ActividadDto>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetActividadesPorClase(int claseId)
+        {
+            var actividades = _mapper.Map<List<ActividadDto>>(_actividad.GetActividadesPorClase(claseId));
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(actividades);
+        }
 
     }
 }

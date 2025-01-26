@@ -23,6 +23,7 @@ builder.Services.AddScoped<IClaseProfesor, ClaseProfesorRepository>();
 builder.Services.AddScoped<ILogin, LoginRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(7129); // HTTPS

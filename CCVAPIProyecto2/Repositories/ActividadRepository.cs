@@ -16,18 +16,31 @@ namespace CCVAPIProyecto2.Repositories
             return _context.Actividades.Any(c => c.Id == actividadId);
         }
 
-        public bool CreateActividad(int actividadId, /*int claseId,*/ Actividad actividad)
+        public bool CreateActividad(int actividadId, int claseID, Actividad actividad)
         {
-            //var claseActividad = _context.Clases.Where(c => c.Id == claseId).FirstOrDefault();
-            //var claseActividadNuevo = new ClaseActividad()
-            //{
-            //    ClaseId = claseId,
-            //    Actividad = actividad,
-            //};
-            //_context.Add(claseActividadNuevo);
-            _context.Add(actividad);
+            
+            var clase = _context.Clases.FirstOrDefault(c => c.Id == claseID);
+            if (clase == null)
+            {
+                throw new ArgumentException("La clase especificada no existe.");
+            }
+
+            
+            var claseActividad = new ClaseActividad
+            {
+                ClaseId = claseID,
+                Actividad = actividad
+            };
+
+            
+            _context.ClaseActividades.Add(claseActividad);
+
+            
+            _context.Actividades.Add(actividad);
+
             return Save();
         }
+
 
         public bool DeleteActividad(Actividad actividad)
         {
@@ -55,6 +68,13 @@ namespace CCVAPIProyecto2.Repositories
         {
             _context.Update(actividad);
             return Save();
+        }
+        public ICollection<Actividad> GetActividadesPorClase(int claseId)
+        {
+            return _context.ClaseActividades
+                .Where(ca => ca.ClaseId == claseId)
+                .Select(ca => ca.Actividad)
+                .ToList();
         }
     }
 }
