@@ -26,18 +26,19 @@ namespace CCVAPIProyecto2.Controllers
                 return BadRequest(ModelState);
             return Ok(actividades);
         }
-        //[HttpGet("{PorId}")]
-        //[ProducesResponseType(200, Type = typeof(Actividad))]
-        //[ProducesResponseType(400)]
-        //public IActionResult GetActividad(int aId)
-        //{
-        //    if (!_actividad.ActividadExiste(aId))
-        //        return NotFound();
-        //    var actividad = _mapper.Map<ActividadDto>(_actividad.GetActividad(aId));
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-        //    return Ok(actividad);
-        //}
+
+        [HttpGet("{PorId}")]
+        [ProducesResponseType(200, Type = typeof(Actividad))]
+        [ProducesResponseType(400)]
+        public IActionResult GetActividad(int aId)
+        {
+            if (!_actividad.ActividadExiste(aId))
+                return NotFound();
+            var actividad = _mapper.Map<ActividadDto>(_actividad.GetActividad(aId));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return Ok(actividad);
+        }
 
         [HttpPost]
         [ProducesResponseType(204)]
