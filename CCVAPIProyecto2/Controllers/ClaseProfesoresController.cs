@@ -40,12 +40,15 @@ namespace CCVAPIProyecto2.Controllers
         public IActionResult CrearClaseProfesor([FromBody] ClaseProfesorDto claseProfesorCreate)
         {
             if (claseProfesorCreate == null)
-                return BadRequest(ModelState);
+            {
+                ModelState.AddModelError("", "Todos los campos deben estar completos");
+                return StatusCode(400, ModelState);
+            }
             var claseProfesores = _claseProfesor.GetClaseProfesores()
                 .Where(c => c.ClasePId == claseProfesorCreate.ClasePId && c.ProfesorId == claseProfesorCreate.ProfesorId).FirstOrDefault();
             if (claseProfesores != null)
             {
-                ModelState.AddModelError("", "ClaseProfesor ya existe");
+                ModelState.AddModelError("", "Ya unió este profesor a esta clase");
                 return StatusCode(422, ModelState);
             }
             if (!ModelState.IsValid)
@@ -62,11 +65,14 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateClaseProfesor(int cpId ,[FromBody] ClaseProfesorDto claseProfesorUpdate)
+        public IActionResult UpdateClaseProfesor([FromBody] ClaseProfesorDto claseProfesorUpdate)
         {
             if (claseProfesorUpdate == null)
+            {
+                ModelState.AddModelError("", "Todos los campos deben estar llenos");
                 return BadRequest(ModelState);
-            if (!_claseProfesor.ClaseProfesorExiste(cpId))
+            }
+            if (!_claseProfesor.ClaseProfesorExiste(claseProfesorUpdate.Id))
             {
                 ModelState.AddModelError("", "ClaseProfesor no existe");
                 return StatusCode(404, ModelState);
@@ -74,7 +80,7 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var claseProfesor = _mapper.Map<ClaseProfesor>(claseProfesorUpdate);
-            if (!_claseProfesor.UpdateClaseProfesor(cpId, claseProfesor))
+            if (!_claseProfesor.UpdateClaseProfesor(claseProfesor))
             {
                 ModelState.AddModelError("", $"Algo salio mal actualizando el registro");
                 return StatusCode(500, ModelState);
@@ -94,7 +100,7 @@ namespace CCVAPIProyecto2.Controllers
             }
             if (!_claseProfesor.DeleteClaseProfesor(claseProfesor))
             {
-                ModelState.AddModelError("", $"Algo salio mal eliminando el registro {cpId}");
+                ModelState.AddModelError("", $"Algo salio mal eliminando el registro");
                 return StatusCode(500, ModelState);
             }
             return Ok("gucci");

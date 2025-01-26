@@ -40,26 +40,8 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    //options.MapType<GradoEnum>(() => new Microsoft.OpenApi.Models.OpenApiSchema
-    //{
-    //    Type = "string",
-    //    Enum = Enum.GetNames(typeof(GradoEnum))
-    //                .Select(name => new Microsoft.OpenApi.Any.OpenApiString(name))
-    //                .Cast<Microsoft.OpenApi.Any.IOpenApiAny>()
-    //                .ToList()
-    //});
-    //options.MapType<MateriaEnum>(() => new Microsoft.OpenApi.Models.OpenApiSchema
-    //{
-    //    Type = "string",
-    //    Enum = Enum.GetNames(typeof(MateriaEnum))
-    //                .Select(name => new Microsoft.OpenApi.Any.OpenApiString(name))
-    //                .Cast<Microsoft.OpenApi.Any.IOpenApiAny>()
-    //                .ToList()
-    //});
+    
 });
-//builder.Services.AddIdentityCore<IdentityUser>().AddEntityFrameworkStores<DataContext>().AddApiEndpoints();
-//builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
-//builder.Services.AddAuthorizationBuilder();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
@@ -77,7 +59,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-//app.MapIdentityApi<IdentityUser>();
 app.UseCors("AllowAll");
 
 app.MapControllers();

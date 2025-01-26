@@ -8,7 +8,7 @@ namespace CCVAPIProyecto2.Interfaces
         ClaseActividad GetClaseActividad(int caId);
         bool ClaseActividadExiste(int caId);
         bool CreateClaseActividad(ClaseActividad claseActividad);
-        bool UpdateClaseActividad(int caId, ClaseActividad claseActividad);
+        bool UpdateClaseActividad(ClaseActividad claseActividad);
         bool DeleteClaseActividad(ClaseActividad claseActividad);
         bool Save();
     }

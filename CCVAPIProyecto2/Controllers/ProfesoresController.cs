@@ -27,25 +27,23 @@ namespace CCVAPIProyecto2.Controllers
             return Ok(profesores);
 
         }
-        //[HttpGet("{PorId}")]
-        //[ProducesResponseType(200, Type = typeof(Profesor))]
-        //[ProducesResponseType(400)]
-        //public IActionResult GetProfesor(int pId)
-        //{
-        //    if (!_profesor.ProfesorExiste(pId))
-        //        return NotFound();
-        //    var profesor = _mapper.Map<ProfesorDto>(_profesor.GetProfesor(pId));
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-        //    return Ok(profesor);
-        //}
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearProfesor(/*[FromQuery] MateriaEnum materiaId,*/ [FromBody] ProfesorDto profesorCreate)
+        public IActionResult CrearProfesor([FromBody] ProfesorDto profesorCreate)
         {
             if (profesorCreate == null)
-                return BadRequest(ModelState);
+            {
+                ModelState.AddModelError("", "Todos los campos deben estar completos");
+                return StatusCode(400, ModelState);
+            }
+            var profesorUsuarioExistente = _profesor.GetProfesores()
+                .FirstOrDefault(c => c.NombreUsuario == profesorCreate.NombreUsuario);
+            if (profesorUsuarioExistente != null)
+            {
+                ModelState.AddModelError("", "El nombre de usuario que ingresó ya existe");
+                return StatusCode(422, ModelState);
+            }
             var profesores = _profesor.GetProfesores()
                 .Where(c => c.Nombre == profesorCreate.Nombre).FirstOrDefault();
             if (profesores != null)
@@ -54,42 +52,40 @@ namespace CCVAPIProyecto2.Controllers
                 return StatusCode(422, ModelState);
             }
             if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Los datos proporcionados no son válidos");
                 return BadRequest(ModelState);
+            }
             var profesorMap = _mapper.Map<Profesor>(profesorCreate);
             profesorMap.Rol = RolEnum.Profesor;
-            if (!_profesor.CreateProfesor(/*materiaId, */profesorMap))
+            if (!_profesor.CreateProfesor(profesorMap))
             {
                 ModelState.AddModelError("", "Algo salio mal");
                 return StatusCode(500, ModelState);
             }
             return Ok("gucci");
         }
-        [HttpPut/*("{profesorId}")*/]
+        [HttpPut]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateProfesor(int profesorId, /*[FromQuery] MateriaEnum materiaId,*/ [FromBody] ProfesorDto profesorUpdate)
+        public IActionResult UpdateProfesor( [FromBody] ProfesorDto profesorUpdate)
         {
             if (profesorUpdate == null)
             {
                 ModelState.AddModelError("", "No se encontró el profesor");
                 return BadRequest(ModelState);
             }
-                
-            if (profesorId != profesorUpdate.Id)
-            {
-                ModelState.AddModelError("", "No se encontró el profesorid");
-                return BadRequest(ModelState);
-            }
-            if (!_profesor.ProfesorExiste(profesorId))
+            if (!_profesor.ProfesorExiste(profesorUpdate.Id))
             {
                 return NotFound();
             }
-                
             if (!ModelState.IsValid)
-                return BadRequest();
+            {
+                return BadRequest(ModelState);
+            }
             var profesorMap = _mapper.Map<Profesor>(profesorUpdate);
-            if (!_profesor.UpdateProfesor(/*materiaId,*/ profesorMap))
+            if (!_profesor.UpdateProfesor(profesorMap))
             {
                 ModelState.AddModelError("", "Algo salió mal");
                 return StatusCode(500, ModelState);
@@ -101,7 +97,7 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteProfesor(int profesorId/*, [FromBody] ProfesorDto profesorUpdate*/)
+        public IActionResult DeleteProfesor(int profesorId)
         {
             if (!_profesor.ProfesorExiste(profesorId))
             {

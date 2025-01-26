@@ -31,22 +31,10 @@ namespace CCVAPIProyecto2.Controllers
             return Ok(estudiantes);
 
         }
-        //[HttpGet("{PorId}")]
-        //[ProducesResponseType(200, Type = typeof(Estudiante))]
-        //[ProducesResponseType(400)]
-        //public IActionResult GetEstudiante(int eId)
-        //{
-        //    if (!_estudiante.EstudianteExiste(eId))
-        //        return NotFound();
-        //    var estudiante = _mapper.Map<EstudianteDto>(_estudiante.GetEstudiante(eId));
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-        //    return Ok(estudiante);
-        //}
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearEstudiante(/*[FromQuery] GradoEnum gradoId,*/ [FromBody] EstudianteDto estudianteCreate)
+        public IActionResult CrearEstudiante( [FromBody] EstudianteDto estudianteCreate)
         {
             if (estudianteCreate == null)
                 return BadRequest(ModelState);
@@ -57,22 +45,29 @@ namespace CCVAPIProyecto2.Controllers
                 ModelState.AddModelError("", "Estudiante ya existe");
                 return StatusCode(422, ModelState);
             }
+            var estudianteUsuario = _estudiante.GetEstudiantes()
+                .Where(c => c.NombreUsuario == estudianteCreate.NombreUsuario).FirstOrDefault();
+            if (estudianteUsuario != null)
+            {
+                ModelState.AddModelError("", "Nombre de usuario ya existe");
+                return StatusCode(422, ModelState);
+            }
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var estudianteMap = _mapper.Map<Estudiante>(estudianteCreate);
             estudianteMap.Rol = RolEnum.Estudiante;
-            if (!_estudiante.CreateEstudiante(/*gradoId,*/ estudianteMap))
+            if (!_estudiante.CreateEstudiante(estudianteMap))
             {
                 ModelState.AddModelError("", "Algo salio mal");
                 return StatusCode(500, ModelState);
             }
             return Ok("gucci");
         }
-        [HttpPut/*("{estudianteId}")*/]
+        [HttpPut]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateEstudiante(int estudianteId, /*[FromQuery] GradoEnum gradoId,*/ [FromBody] EstudianteDto estudianteUpdate)
+        public IActionResult UpdateEstudiante([FromBody] EstudianteDto estudianteUpdate)
         {
             if (estudianteUpdate == null)
             {
@@ -80,13 +75,7 @@ namespace CCVAPIProyecto2.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (estudianteId != estudianteUpdate.Id)
-            {
-                ModelState.AddModelError("", "No se encontró el estudianteid");
-                return BadRequest(ModelState);
-            }
-
-            if (!_estudiante.EstudianteExiste(estudianteId))
+            if (!_estudiante.EstudianteExiste(estudianteUpdate.Id))
             {
                 return NotFound();
             }
@@ -98,7 +87,7 @@ namespace CCVAPIProyecto2.Controllers
 
             var estudianteMap = _mapper.Map<Estudiante>(estudianteUpdate);
 
-            if (!_estudiante.UpdateEstudiante(/*gradoId,*/ estudianteMap))
+            if (!_estudiante.UpdateEstudiante(estudianteMap))
             {
                 ModelState.AddModelError("", "Algo salió mal");
                 return StatusCode(500, ModelState);
@@ -106,11 +95,11 @@ namespace CCVAPIProyecto2.Controllers
 
             return NoContent();
         }
-        [HttpDelete/*("{deleteEstudianteId}")*/]
+        [HttpDelete]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteEstudiante(int estudianteId/*, [FromBody] EstudianteDto estudianteUpdate*/)
+        public IActionResult DeleteEstudiante(int estudianteId)
         {
             if (!_estudiante.EstudianteExiste(estudianteId))
             {

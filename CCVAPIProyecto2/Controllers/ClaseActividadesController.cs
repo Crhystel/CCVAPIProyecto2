@@ -63,11 +63,11 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateClaseActividad(int caId,[FromBody] ClaseActividadDto claseActividadUpdate)
+        public IActionResult UpdateClaseActividad([FromBody] ClaseActividadDto claseActividadUpdate)
         {
             if (claseActividadUpdate == null)
                 return BadRequest(ModelState);
-            if (!_claseActividad.ClaseActividadExiste(caId))
+            if (!_claseActividad.ClaseActividadExiste(claseActividadUpdate.Id))
             {
                 ModelState.AddModelError("", "ClaseActividad no existe");
                 return StatusCode(422, ModelState);
@@ -75,7 +75,7 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var claseActividadMap = _mapper.Map<ClaseActividad>(claseActividadUpdate);
-            if (!_claseActividad.UpdateClaseActividad(caId,claseActividadMap))
+            if (!_claseActividad.UpdateClaseActividad(claseActividadMap))
             { 
                 ModelState.AddModelError("", $"Algo salio mal actualizando el registro {claseActividadUpdate}");
                 return StatusCode(500, ModelState);

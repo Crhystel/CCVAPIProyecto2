@@ -8,7 +8,7 @@ namespace CCVAPIProyecto2.Interfaces
         ClaseProfesor GetClaseProfesor(int cpId);
         bool ClaseProfesorExiste(int cpId);
         bool CreateClaseProfesor(ClaseProfesor claseProfesor);
-        bool UpdateClaseProfesor(int cpId, ClaseProfesor claseProfesor);
+        bool UpdateClaseProfesor(ClaseProfesor claseProfesor);
         bool DeleteClaseProfesor(ClaseProfesor claseProfesor);
         bool Save();
     }

@@ -53,7 +53,7 @@ namespace CCVAPIProyecto2.Repositories
             return saved > 0 ? true : false;
         }
 
-        public bool UpdateClaseActividad(int caId, ClaseActividad claseActividad)
+        public bool UpdateClaseActividad(ClaseActividad claseActividad)
         {
             _context.Update(claseActividad);
             return Save();

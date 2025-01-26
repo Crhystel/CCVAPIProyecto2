@@ -8,7 +8,7 @@ namespace CCVAPIProyecto2.Interfaces
         ClaseEstudiante GetClaseEstudiante(int ceId);
         bool ClaseEstudianteExiste(int ceId);
         bool CreateClaseEstudiante(ClaseEstudiante claseEstudiante);
-        bool UpdateClaseEstudiante(int ceId, ClaseEstudiante claseEstudiante);
+        bool UpdateClaseEstudiante(ClaseEstudiante claseEstudiante);
         bool DeleteClaseEstudiante(ClaseEstudiante claseEstudiante);
         bool Save();
     }

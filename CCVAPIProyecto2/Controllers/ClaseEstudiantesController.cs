@@ -40,12 +40,15 @@ namespace CCVAPIProyecto2.Controllers
         public IActionResult CrearClaseEstudiante(  [FromBody] ClaseEstudianteDto claseEstudianteCreate)
         {
             if (claseEstudianteCreate == null)
-                return BadRequest(ModelState);
+            {
+                ModelState.AddModelError("", "Todos los campos deben estar completos");
+                return StatusCode(400, ModelState);
+            }
             var claseEstudiantes = _claseEstudiante.GetClaseEstudiantes()
                 .Where(c => c.ClaseId == claseEstudianteCreate.ClaseId && c.EstudianteId == claseEstudianteCreate.EstudianteId).FirstOrDefault();
             if (claseEstudiantes != null)
             {
-                ModelState.AddModelError("", "ClaseEstudiante ya existe");
+                ModelState.AddModelError("", "Ya unío este estudiante a esta clase");
                 return StatusCode(422, ModelState);
             }
             if (!ModelState.IsValid)
@@ -62,11 +65,14 @@ namespace CCVAPIProyecto2.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateClaseEstudiante(int ceId,/*[FromQuery] int claseId, [FromQuery] int estudianteId,*/ [FromBody] ClaseEstudianteDto claseEstudianteUpdate)
+        public IActionResult UpdateClaseEstudiante([FromBody] ClaseEstudianteDto claseEstudianteUpdate)
         {
             if (claseEstudianteUpdate == null)
+            {
+                ModelState.AddModelError("", "Todos los campos deben estar llenos");
                 return BadRequest(ModelState);
-            if (!_claseEstudiante.ClaseEstudianteExiste(ceId))
+            }
+            if (!_claseEstudiante.ClaseEstudianteExiste(claseEstudianteUpdate.Id))
             {
                 ModelState.AddModelError("", "ClaseEstudiante no existe");
                 return StatusCode(404, ModelState);
@@ -74,7 +80,7 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var claseEstudianteMap = _mapper.Map<ClaseEstudiante>(claseEstudianteUpdate);
-            if (!_claseEstudiante.UpdateClaseEstudiante(ceId,claseEstudianteMap))
+            if (!_claseEstudiante.UpdateClaseEstudiante(claseEstudianteMap))
             {
                 ModelState.AddModelError("", $"Algo salio mal guardando el registro ");
                 return StatusCode(500, ModelState);

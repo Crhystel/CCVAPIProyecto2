@@ -7,8 +7,8 @@ namespace CCVAPIProyecto2.Interfaces
         ICollection<Clase> GetClases();
         Clase GetClase(int id);
         bool ClaseExiste(int id);
-        bool CreateClase( /*int estudiantesId, int profesoresId, */Clase clase);
-        bool UpdateClase(/* int estudiantesId, int profesoresId,*/ Clase clase);
+        bool CreateClase(Clase clase);
+        bool UpdateClase(Clase clase);
         bool DeleteClase(Clase clase);
 
         bool Save();

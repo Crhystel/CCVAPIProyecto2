@@ -9,7 +9,7 @@ namespace CCVAPIProyecto2.Interfaces
         bool EstudianteExiste(int id);
         bool DeleteEstudiante(Estudiante estudiante);
         bool Save();
-        bool CreateEstudiante(/*GradoEnum gradoId,*/ Estudiante estudiante);
-        bool UpdateEstudiante(/*GradoEnum gradoId,*/ Estudiante estudiante);
+        bool CreateEstudiante( Estudiante estudiante);
+        bool UpdateEstudiante(Estudiante estudiante);
     }
 }
