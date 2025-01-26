@@ -56,6 +56,7 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var profesorMap = _mapper.Map<Profesor>(profesorCreate);
+            profesorMap.Rol = RolEnum.Profesor;
             if (!_profesor.CreateProfesor(/*materiaId, */profesorMap))
             {
                 ModelState.AddModelError("", "Algo salio mal");

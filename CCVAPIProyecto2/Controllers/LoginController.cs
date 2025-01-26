@@ -20,6 +20,15 @@ namespace CCVAPIProyecto2.Controllers
             {
                 return Unauthorized("Nombre de usuario o Contraseña incorrectos");
             }
+            var usuarioResponse = new
+            {
+                usuario.Id,
+                usuario.Cedula,
+                usuario.Nombre,
+                usuario.NombreUsuario,
+                usuario.Edad,
+                Rol = usuario.Rol.ToString()
+            };
             return Ok(usuario);
         }
     }

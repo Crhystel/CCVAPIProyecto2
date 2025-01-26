@@ -60,6 +60,7 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var estudianteMap = _mapper.Map<Estudiante>(estudianteCreate);
+            estudianteMap.Rol = RolEnum.Estudiante;
             if (!_estudiante.CreateEstudiante(/*gradoId,*/ estudianteMap))
             {
                 ModelState.AddModelError("", "Algo salio mal");
