@@ -76,6 +76,32 @@ namespace CCVAPIProyecto2.Controllers
                 ModelState.AddModelError("", "No se encontró el profesor");
                 return BadRequest(ModelState);
             }
+            var profesorOriginal = _profesor.GetProfesor(profesorUpdate.Id);
+            if (profesorOriginal == null)
+            {
+                return NotFound();
+            }
+            var duplicadoNombre = _profesor.GetProfesores()
+                .Any(e => e.Nombre == profesorUpdate.Nombre && e.Id != profesorUpdate.Id);
+            if (duplicadoNombre)
+            {
+                ModelState.AddModelError("", "El nombre ya está en uso por otro profesor.");
+                return StatusCode(422, ModelState);
+            }
+            var duplicadoNombreUsuario = _profesor.GetProfesores()
+                .Any(c => c.NombreUsuario == profesorUpdate.NombreUsuario && c.Id != profesorUpdate.Id);
+            if (duplicadoNombreUsuario)
+            {
+                ModelState.AddModelError("", "El nombre de usuario ya está en uso por otro profesor.");
+                return StatusCode(422, ModelState);
+            }
+            _mapper.Map(profesorUpdate, profesorOriginal);
+            if (!_profesor.UpdateProfesor(profesorOriginal))
+            {
+                ModelState.AddModelError("", "Algo salió mal");
+                return StatusCode(500, ModelState);
+            }
+            
             if (!_profesor.ProfesorExiste(profesorUpdate.Id))
             {
                 return NotFound();
@@ -83,13 +109,6 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-            var profesorMap = _mapper.Map<Profesor>(profesorUpdate);
-            if (!_profesor.UpdateProfesor(profesorMap))
-            {
-                ModelState.AddModelError("", "Algo salió mal");
-                return StatusCode(500, ModelState);
-
             }
             return NoContent();
         }

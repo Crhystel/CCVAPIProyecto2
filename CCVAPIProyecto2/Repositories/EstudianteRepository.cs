@@ -1,6 +1,7 @@
 ﻿using CCVAPIProyecto2.Data;
 using CCVAPIProyecto2.Interfaces;
 using CCVAPIProyecto2.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CCVAPIProyecto2.Repositories
 {
@@ -37,11 +38,18 @@ namespace CCVAPIProyecto2.Repositories
             return saved > 0 ? true : false;
         }
 
-        public bool UpdateEstudiante(/*GradoEnum gradoId,*/ Estudiante estudiante)
+        public bool UpdateEstudiante(Estudiante estudiante)
         {
-            _context.Update(estudiante);
+            var trackedEntity = _context.Estudiantes.Local.FirstOrDefault(e => e.Id == estudiante.Id);
+            if (trackedEntity != null)
+            {
+                _context.Entry(trackedEntity).State = EntityState.Detached;
+            }
+            _context.Attach(estudiante);
+            _context.Entry(estudiante).State = EntityState.Modified;
             return Save();
         }
+
 
         public ICollection<Estudiante> GetEstudiantes()
         {

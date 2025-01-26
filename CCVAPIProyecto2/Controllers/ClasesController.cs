@@ -74,6 +74,24 @@ namespace CCVAPIProyecto2.Controllers
                 ModelState.AddModelError("", "No se encontró la clase");
                 return BadRequest(ModelState);
             }
+            var claseOriginal = _clase.GetClase(claseUpdate.Id);
+            if (claseOriginal == null)
+            {
+                return NotFound();
+            }
+            var duplicadoNombre = _clase.GetClases()
+                .Any(e => e.Nombre == claseUpdate.Nombre && e.Id != claseUpdate.Id);
+            if (duplicadoNombre)
+            {
+                ModelState.AddModelError("","Otra clase se llama igual");
+                return StatusCode(422, ModelState);
+            }
+            _mapper.Map(claseUpdate, claseOriginal);
+            if (!_clase.UpdateClase(claseOriginal))
+            {
+                ModelState.AddModelError("", "Algo salió mal");
+                return StatusCode(500, ModelState);
+            }
 
             if (!_clase.ClaseExiste(claseUpdate.Id))
             {
@@ -83,12 +101,6 @@ namespace CCVAPIProyecto2.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-            var claseMap = _mapper.Map<Clase>(claseUpdate);
-            if (!_clase.UpdateClase(claseMap)) 
-            {
-                ModelState.AddModelError("", "Algo salio mal");
-                return StatusCode(500, ModelState);
             }
             return NoContent();
         }

@@ -1,6 +1,7 @@
 ﻿using CCVAPIProyecto2.Data;
 using CCVAPIProyecto2.Interfaces;
 using CCVAPIProyecto2.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CCVAPIProyecto2.Repositories
 {
@@ -12,9 +13,8 @@ namespace CCVAPIProyecto2.Repositories
             _context = context;
         }
 
-        public bool CreateProfesor(/*MateriaEnum materiaId, */Profesor profesor)
+        public bool CreateProfesor(Profesor profesor)
         {
-            //profesor.Materia = materiaId;
             _context.Add(profesor);
             return Save();
         }
@@ -40,9 +40,15 @@ namespace CCVAPIProyecto2.Repositories
             return saved > 0 ? true : false;
         }
 
-        public bool UpdateProfesor(/*MateriaEnum materiaId,*/ Profesor profesor)
+        public bool UpdateProfesor(Profesor profesor)
         {
-            _context.Update(profesor);
+            var trackedEntity = _context.Profesores.Local.FirstOrDefault(e => e.Id == profesor.Id);
+            if (trackedEntity != null)
+            {
+                _context.Entry(trackedEntity).State = EntityState.Detached;
+            }
+            _context.Attach(profesor);
+            _context.Entry(profesor).State = EntityState.Modified;
             return Save();
         }
         public bool DeleteProfesor(Profesor profesor)

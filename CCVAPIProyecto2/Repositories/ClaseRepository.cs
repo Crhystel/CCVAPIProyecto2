@@ -1,6 +1,7 @@
 ﻿using CCVAPIProyecto2.Data;
 using CCVAPIProyecto2.Interfaces;
 using CCVAPIProyecto2.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CCVAPIProyecto2.Repositories
 {
@@ -51,7 +52,13 @@ namespace CCVAPIProyecto2.Repositories
 
         public bool UpdateClase(Clase clase)
         {
-            _context.Update(clase);
+            var trackedEntity = _context.Clases.Local.FirstOrDefault(e => e.Id == clase.Id);
+            if (trackedEntity != null)
+            {
+                _context.Entry(trackedEntity).State = EntityState.Detached;
+            }
+            _context.Attach(clase);
+            _context.Entry(clase).State = EntityState.Modified;
             return Save();
         }
     }

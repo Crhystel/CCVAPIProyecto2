@@ -74,27 +74,46 @@ namespace CCVAPIProyecto2.Controllers
                 ModelState.AddModelError("", "No se encontró el estudiante");
                 return BadRequest(ModelState);
             }
-
-            if (!_estudiante.EstudianteExiste(estudianteUpdate.Id))
+            var estudianteOriginal = _estudiante.GetEstudiante(estudianteUpdate.Id);
+            if (estudianteOriginal == null)
             {
                 return NotFound();
             }
-
-            if (!ModelState.IsValid)
+            var duplicadoNombre = _estudiante.GetEstudiantes()
+                .Any(e => e.Nombre == estudianteUpdate.Nombre && e.Id != estudianteUpdate.Id);
+            if (duplicadoNombre)
             {
-                return BadRequest(ModelState);
+                ModelState.AddModelError("", "El nombre ya está en uso por otro estudiante.");
+                return StatusCode(422, ModelState);
             }
 
-            var estudianteMap = _mapper.Map<Estudiante>(estudianteUpdate);
+            var duplicadoNombreUsuario = _estudiante.GetEstudiantes()
+                .Any(c => c.NombreUsuario == estudianteUpdate.NombreUsuario && c.Id != estudianteUpdate.Id);
+            if (duplicadoNombreUsuario)
+            {
+                ModelState.AddModelError("", "El nombre de usuario ya está en uso por otro estudiante.");
+                return StatusCode(422, ModelState);
+            }
+            _mapper.Map(estudianteUpdate, estudianteOriginal);
 
-            if (!_estudiante.UpdateEstudiante(estudianteMap))
+            if (!_estudiante.UpdateEstudiante(estudianteOriginal))
             {
                 ModelState.AddModelError("", "Algo salió mal");
                 return StatusCode(500, ModelState);
             }
 
+            if (!_estudiante.EstudianteExiste(estudianteUpdate.Id))
+            {
+                return NotFound();
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             return NoContent();
         }
+
         [HttpDelete]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
