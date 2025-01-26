@@ -117,5 +117,20 @@ namespace CCVAPIProyecto2.Controllers
             }
             return Ok("gucci");
         }
+
+
+        [HttpGet("profesor/{profesorId}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ClaseProfesorDto>))]
+        public IActionResult GetClasesByProfesorId(int profesorId)
+        {
+            var clases = _mapper.Map<List<ClaseProfesorDto>>(
+                _claseProfesor.GetClasesByProfesorId(profesorId)
+            );
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(clases);
+        }
     }
 }

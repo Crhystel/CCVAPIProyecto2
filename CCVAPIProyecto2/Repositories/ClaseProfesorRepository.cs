@@ -12,6 +12,22 @@ namespace CCVAPIProyecto2.Repositories
         {
             _context = context;
         }
+
+        public ICollection<ClaseProfesor> GetClasesByProfesorId(int profesorId)
+        {
+            return _context.ClaseProfesores
+                .Include(c => c.ClaseP)
+                .Where(c => c.ProfesorId == profesorId)
+                .ToList();
+        }
+
+        public ICollection<ClaseProfesor> GetClaseProfesores()
+        {
+            return _context.ClaseProfesores
+                .Include(c => c.ClaseP)
+                .Include(c => c.Profesor)
+                .ToList();
+        }
         public bool ClaseProfesorExiste(int cpId)
         {
             return _context.ClaseProfesores.Any(c => c.Id == cpId);
@@ -41,10 +57,7 @@ namespace CCVAPIProyecto2.Repositories
             return _context.ClaseProfesores.Where(c => c.Id == cpId).FirstOrDefault();
         }
 
-        public ICollection<ClaseProfesor> GetClaseProfesores()
-        {
-            return _context.ClaseProfesores.Include(c => c.ClaseP).Include(c => c.Profesor).ToList();
-        }
+        
 
         public bool Save()
         {
