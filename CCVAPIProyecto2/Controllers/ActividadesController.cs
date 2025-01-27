@@ -12,10 +12,12 @@ namespace CCVAPIProyecto2.Controllers
     {
         private readonly IActividad _actividad;
         private readonly IMapper _mapper;
-        public ActividadesController(IActividad actividad, IMapper mapper)
+        private readonly IActividad _actividadRepository;
+        public ActividadesController(IActividad actividad, IMapper mapper, IActividad actividadRepository)
         {
             _actividad = actividad;
             _mapper = mapper;
+            _actividadRepository = actividadRepository;
         }
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Actividad>))]
@@ -43,29 +45,27 @@ namespace CCVAPIProyecto2.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CrearActividad([FromQuery] int claseId, [FromQuery] int actividadId, [FromBody] ActividadDto actividadCreate)
+        public IActionResult CrearActividad([FromQuery] int claseId, [FromBody] ActividadDto actividadCreate)
         {
             if (actividadCreate == null)
-               return BadRequest(ModelState);
-            var actividades = _actividad.GetActividades()
-               .Where(c => c.Id == actividadId).FirstOrDefault();
-            if (actividades != null)
-            {
-                ModelState.AddModelError("", "Actividad ya existe");
-                return StatusCode(422, ModelState);
-            }
+                return BadRequest(ModelState);
+
+            if (!_actividad.ActividadExiste(claseId)) // Validar que la clase existe
+                return NotFound("La clase especificada no existe.");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             var actividadMap = _mapper.Map<Actividad>(actividadCreate);
-            if (!_actividad.CreateActividad(claseId, actividadId, actividadMap))
+            if (!_actividad.CreateActividad(claseId, actividadMap)) // Nota: Elimina el parámetro actividadId
             {
-                ModelState.AddModelError("", "Algo malio sal");
+                ModelState.AddModelError("", "Algo salió mal al crear la actividad.");
                 return StatusCode(500, ModelState);
             }
-            return Ok("gucci");
 
+            return Ok("Actividad creada con éxito.");
         }
+
 
 
         [HttpPut/*("{actividadId}")*/]
@@ -123,6 +123,8 @@ namespace CCVAPIProyecto2.Controllers
 
             return Ok(actividades);
         }
+
+
 
     }
 }

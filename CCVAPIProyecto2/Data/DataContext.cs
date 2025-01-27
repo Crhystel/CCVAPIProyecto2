@@ -120,6 +120,16 @@ namespace CCVAPIProyecto2.Data
                 Rol = RolEnum.Profesor,
 
             });
+
+            modelBuilder.Entity<ActividadEstudiante>()
+                .HasOne(ae => ae.Actividad)
+                .WithMany(a => a.ActividadEstudiantes)
+                .HasForeignKey(ae => ae.ActividadId);
+
+            modelBuilder.Entity<ActividadEstudiante>()
+                .HasOne(ae => ae.Estudiante)
+                .WithMany(e => e.ActividadEstudiantes)
+                .HasForeignKey(ae => ae.EstudianteId);
         }
     }
 }

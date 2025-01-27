@@ -27,6 +27,11 @@ namespace CCVAPIProyecto2.Helper
             CreateMap<ActividadProfesor, ActividadProfesorDto>();
             CreateMap<ActividadProfesorDto, ActividadProfesor>();
 
+            CreateMap<ActividadEstudiante, ActividadEstudianteDto>()
+                .ForMember(dest => dest.ActividadTitulo, opt => opt.MapFrom(src => src.Actividad.Titulo))
+                .ForMember(dest => dest.EstudianteNombre, opt => opt.MapFrom(src => src.Estudiante.Nombre));
+            CreateMap<ActividadEstudianteDto, ActividadEstudiante>();
+
         }
     }
 }

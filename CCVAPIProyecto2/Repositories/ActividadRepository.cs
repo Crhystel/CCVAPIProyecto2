@@ -16,7 +16,7 @@ namespace CCVAPIProyecto2.Repositories
             return _context.Actividades.Any(c => c.Id == actividadId);
         }
 
-        public bool CreateActividad(int actividadId, int claseID, Actividad actividad)
+        public bool CreateActividad(int claseID, Actividad actividad)
         {
             
             var clase = _context.Clases.FirstOrDefault(c => c.Id == claseID);

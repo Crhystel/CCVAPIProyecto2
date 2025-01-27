@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using CCVAPIProyecto2.Data;
 using CCVAPIProyecto2.Dto;
 using CCVAPIProyecto2.Interfaces;
 using CCVAPIProyecto2.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CCVAPIProyecto2.Controllers
 {
@@ -12,10 +14,12 @@ namespace CCVAPIProyecto2.Controllers
     {
         private readonly IActividadEstudiante _actividadEstudiante;
         private readonly IMapper _mapper;
-        public ActividadEstudiantesController(IActividadEstudiante actividadEstudiante, IMapper mapper)
+        private readonly DataContext _context;
+        public ActividadEstudiantesController(IActividadEstudiante actividadEstudiante, IMapper mapper, DataContext context)
         {
             _actividadEstudiante = actividadEstudiante;
             _mapper = mapper;
+            _context = context;
         }
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<ActividadEstudiante>))]
@@ -88,5 +92,23 @@ namespace CCVAPIProyecto2.Controllers
             }
             return Ok("gucci");
         }
+
+        [HttpGet("actividades-por-estudiante")]
+        public IActionResult GetActividadesPorEstudiante([FromQuery] int estudianteId)
+        {
+            var actividades = _context.ActividadEstudiantes
+                .Where(ae => ae.EstudianteId == estudianteId)
+                .Include(ae => ae.Actividad)
+                .Select(ae => new {
+                    ae.Actividad.Id,
+                    ae.Actividad.Titulo,
+                    ae.Actividad.Descripcion,
+                    ae.Actividad.FechaEntrega
+                })
+                .ToList();
+
+            return Ok(actividades);
+        }
+
     }
 }

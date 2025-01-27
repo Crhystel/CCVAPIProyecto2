@@ -64,5 +64,30 @@ namespace CCVAPIProyecto2.Repositories
             _context.Entry(claseActividad).State = EntityState.Modified;
             return Save();
         }
+        public bool AsignarActividadAEstudiantes(int claseId, int actividadId)
+        {
+            var clase = _context.Clases.Include(c => c.ClaseEstudiantes).FirstOrDefault(c => c.Id == claseId);
+            if (clase == null) return false;
+
+            foreach (var estudiante in clase.ClaseEstudiantes)
+            {
+                var actividadEstudiante = new ActividadEstudiante
+                {
+                    EstudianteId = estudiante.EstudianteId,
+                    ActividadId = actividadId
+                };
+
+                var existente = _context.ActividadEstudiantes
+                    .FirstOrDefault(ae => ae.EstudianteId == actividadEstudiante.EstudianteId && ae.ActividadId == actividadEstudiante.ActividadId);
+
+                if (existente == null)
+                {
+                    _context.ActividadEstudiantes.Add(actividadEstudiante);
+                }
+            }
+
+            return _context.SaveChanges() > 0;
+        }
+
     }
 }
