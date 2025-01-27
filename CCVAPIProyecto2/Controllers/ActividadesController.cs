@@ -13,11 +13,13 @@ namespace CCVAPIProyecto2.Controllers
         private readonly IActividad _actividad;
         private readonly IMapper _mapper;
         private readonly IActividad _actividadRepository;
-        public ActividadesController(IActividad actividad, IMapper mapper, IActividad actividadRepository)
+        private readonly IClase _clase;
+        public ActividadesController(IActividad actividad, IMapper mapper, IActividad actividadRepository, IClase clase)
         {
             _actividad = actividad;
             _mapper = mapper;
             _actividadRepository = actividadRepository;
+            _clase = clase;
         }
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Actividad>))]
@@ -50,8 +52,9 @@ namespace CCVAPIProyecto2.Controllers
             if (actividadCreate == null)
                 return BadRequest(ModelState);
 
-            if (!_actividad.ActividadExiste(claseId)) // Validar que la clase existe
+            if (!_clase.ClaseExiste(claseId))
                 return NotFound("La clase especificada no existe.");
+
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
